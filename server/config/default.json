@@ -1,0 +1,7 @@
+{
+  "port": 5000,
+  "jwtSecret": "alexey mern",
+  "mongoUri1": "mongodb://localhost:27017/project1",
+  "mongoUri": "mongodb+srv://alex277:peIRbDMQuH2EoxkM@cluster0-utkrq.mongodb.net/park_db?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000"
+}

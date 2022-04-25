@@ -1,0 +1,241 @@
+@import "~bootstrap/scss/bootstrap";
+.p-password input {
+  width: 15rem;
+}
+body{
+  margin: 0;
+  padding: 0;
+
+}
+.login-body{
+  //background-image: url("./public/binarnyy-kod-it.png");
+  //display: block;
+  //background-position: center;
+  //background-size: cover;
+  //background-repeat: no-repeat;7
+  //min-height: 100vh;
+}
+.p-col-12.email-login{
+    padding: 1em;
+}
+.p-col-12.password-login{
+  padding: 1em;
+}
+.login_menu{
+  display: block;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.login-panel-header{
+  background-color: #607D8B ;
+  text-align: center;
+  padding-top:8px;
+  padding-right: 14px;
+  padding-left: 14px;
+  padding-bottom: 8px;
+}
+.login-panel-content{
+  padding-bottom: 50px;
+  padding-left: 100px;
+  padding-top: 50px;
+  padding-right: 100px;
+  font-size: 14px;
+}
+.city-page{
+  margin:20px 10px 20px 10px;
+  .city-grid-table{
+   display: flex;
+    justify-content: space-between;
+    margin: 10px 0 10px 0;
+
+    div{
+      width: 250px;
+      border: 2px solid grey;
+      border-radius: 30px;
+      text-align: center;
+      margin: 10px;
+      i{
+        font-size: 2em;
+        align-items: center;
+        margin-top: 10px;
+      }
+      h4{
+        text-align: center;
+      }
+    }
+    div:hover{
+      cursor: pointer;
+      color: #5e5eff;
+      border: 2px solid #5e5eff;
+    }
+
+  }
+}
+.h1-login-1{
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.fin-image{
+  vertical-align: middle;
+  width: 5rem;
+}
+.RolePage{
+  // background: #454547;
+  display: grid;
+  grid-template-areas:
+          "RoleTable RoleAdd";
+  grid-template-columns: 2fr  1fr;
+
+  height: 100vh;
+  margin: 0;
+  grid-gap: 150px;
+  .RoleTable{
+    grid-area: RoleTable;
+    //background: #6b6a6a;
+  }
+  .RoleAdd{
+    grid-area: RoleAdd;
+    //background: #454547;
+  }
+}
+.PdfPage{
+
+  display: grid;
+  grid-template-areas:
+            "variableOfPdfs listOfPdf";
+  grid-template-columns: 2fr 2fr;
+
+  height: 100vh;
+  margin: 0;
+  grid-gap: 10px;
+  .variableOfPdfs{
+    grid-area: variableOfPdfs;
+    background: #6b6a6a;
+  }
+  .listOfPdf{
+    grid-area: listOfPdf;
+    background: #454547;
+  }
+}
+.tables2x1{
+  background: #434342;
+  display: grid;
+  grid-template-areas:
+            "tableUsers addUser";
+  grid-template-columns: 2fr 1fr;
+
+  height: 100vh;
+  margin: 0;
+  grid-gap: 100px;
+  table{
+    grid-area: tableUsers;
+    background: #b1b0b1;
+  }
+  form{
+    grid-area: addUser;
+    background: #a0a0a0;
+  }
+}
+.Content{
+
+  display: grid;
+  grid-template-areas:
+          "deviceItem deviceItem graph";
+  grid-template-columns:  1fr 1fr 1fr;
+  background: #ba5e5e;
+  height: 100vh;
+  margin: 1px;
+  grid-gap: 10px;
+  .deviceItem{
+    grid-area: deviceItem;
+    margin: 10px;
+    background: #ffffff;
+  }
+  .graph{
+    grid-area: graph;
+    margin: 10px;
+  }
+
+}
+.login_page {
+  display: grid;
+  grid-template-areas:
+     "nav header header"
+    "nav article article"
+    "nav footer footer";
+  grid-template-rows: 60px 1fr 60px;
+  grid-template-columns: 300px 1fr 15%;
+
+  height: 100vh;
+  margin: 0;
+     .sidebar{
+    //background: #2f7c8f;
+  }
+  #mainArticle{
+    //background: #4336b8;
+    display: grid;
+    //тут был код..
+  }
+  header{
+    background: #6c6d6b;
+  }
+  footer{
+    background: #6c6d6b;
+  }
+}
+
+#pageHeader {
+  grid-area: header;
+}
+#pageFooter {
+  grid-area: footer;
+}
+#mainArticle {
+  grid-area: article;
+}
+.sidebar {
+  border-right: 1px solid #000000;
+  grid-area: nav;
+  height: 100%;
+  width: 300px;
+  position: fixed;
+
+}
+#siteAds {
+  grid-area: ads;
+}
+
+.dialog-demo .p-button {
+  margin: 0 .5rem 0 0;
+  min-width: 10rem;
+}
+
+.dialog-demo p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dialog-demo .confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-demo .p-dialog .p-button {
+  min-width: 6rem;
+}
+.dialog-demo  {
+  .p-dialog-content{
+    display: grid;
+    min-height: 300px;
+    min-width: 500px;
+
+  }
+}
+

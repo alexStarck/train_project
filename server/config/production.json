@@ -1,0 +1,8 @@
+{
+  "port": 5000,
+  "jwtSecret": "alexey mern",
+  "mongoUri": "mongodb+srv://alex277:peIRbDMQuH2EoxkM@cluster0-utkrq.mongodb.net/prod?retryWrites=true&w=majority",
+  "baseUrl": "http://localhost:5000",
+  "user":"Read_And_Write",
+  "password":"Sert412"
+}

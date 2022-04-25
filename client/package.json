@@ -1,0 +1,50 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.1",
+    "classnames": "^2.3.1",
+    "form-data": "^4.0.0",
+    "html2canvas": "^1.0.0-rc.7",
+    "jquery": "^3.5.1",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.14",
+    "node-sass": "^4.14.1",
+    "primeflex": "^2.0.0",
+    "primeicons": "^4.1.0",
+    "primereact": "^5.0.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-router-dom": "^5.2.0",
+    "react-router-last-location": "^2.0.1",
+    "react-scripts": "^3.4.4",
+    "react-select": "^3.2.0",
+    "react-switch": "^5.0.1",
+    "react-transition-group": "^4.4.2",
+    "styled-components": "^5.2.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "proxy": "http://localhost:5000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {}
+}

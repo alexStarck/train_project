@@ -1,0 +1,356 @@
+
+.PageName{
+  //background: #f8f9fa;
+  //border:1px solid #dee2e6;
+  //padding:1rem;
+  //border-radius: 3px;
+  height: 80px;
+}
+.report-badge {
+  border-radius: 2px;
+  padding: .25em .5rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+}
+
+.report-badge.status-process {
+  background: #b3b3b3;
+  color: #696969;
+}
+.report-badge.status-completed {
+  background: #C8E6C9;
+  color: #256029;
+}
+
+#pdfTable{
+  table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+  td,th{
+    padding: 3px;
+    border: 1px solid black;
+  }
+  th{
+    background: #ffffff;
+  }
+}
+.p-password input {
+  width: 15rem;
+}
+body{
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.p-col-12.email-login{
+    padding: 1em;
+}
+.p-col-12.password-login{
+  padding: 1em;
+}
+.login_menu{
+  display: block;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+.login-body{
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  .login-panel{
+
+    width: 565px;
+    height: 410px;
+    background-color: #fafafa;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -282px;
+    margin-top: -232px;
+    padding: 0;
+    border-radius: 3px;
+    box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 5px 22px 4px rgba(0, 0, 0, 0.12), 0 12px 17px 2px rgba(0, 0, 0, 0.14);
+  }
+
+  .login-panel-header{
+    text-align: center;
+    width: 108px;
+    height: 108px;
+    position: relative;
+    left: 50%;
+    margin-top: 40px;
+    margin-left: -54px;
+    h3{
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 1.3px;
+      color: #616161;
+      margin-top: 0;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+  }
+  .login-panel-content{
+
+    .p-grid{
+      display:flex;
+      flex-wrap:wrap;
+      margin-top:-.5rem;
+      margin-right: -.5rem;
+      margin-left:-.5rem;
+
+    }
+    .p-col-12{
+      padding:1em;
+    }
+    .p-inputtext{
+      font-size: 16px;
+      width:100%;
+      margin:0;
+    }
+    .p-col-6{
+      padding:1em;
+      width:50%;
+    }
+    .p-float-label{
+      display: block;
+      position: relative;
+    }
+
+    .forget-btn{
+      border:0;
+      padding:0;
+      margin:0;
+      text-align:left;
+      background-color:initial;
+      cursor:pointer;
+      color: #457fca;
+    }
+
+
+
+
+
+
+
+
+    padding: 12px 98px;
+    //position: relative;
+  }
+}
+@media screen and (min-width: 768px) {
+
+  .p-dialog{
+    background-color: black;
+    color:black;
+  }
+  .p-dialog-content{
+    background-color: black;
+    color:black;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .login-body .login-panel {
+    left: 0;
+    margin-left: 0;
+    width: 100%;
+  }
+  .login-body .login-panel .login-panel-content {
+    padding: 12px 38px;
+  }
+
+  .sidebar{
+    left:-300px;
+  }
+  .login_page{
+
+
+  }
+
+}
+.login_page {
+
+
+  height: 100vh;
+  margin: 0;
+  .sidebar{
+    //background: #2f7c8f;
+  }
+  .Page{
+    //background: #4336b8;
+    display: grid;
+
+  }
+
+}
+
+#pageHeader {
+  grid-area: header;
+}
+#pageFooter {
+  grid-area: footer;
+}
+.Page {
+  grid-area: page;
+}
+.sidebar {
+  border-right: 1px solid #000000;
+  grid-area: menu;
+  height: 100%;
+  width: 300px;
+  position: fixed;
+
+}
+#siteAds {
+  grid-area: ads;
+}
+
+.dialog-demo .p-button {
+  margin: 0 .5rem 0 0;
+  min-width: 10rem;
+}
+
+.dialog-demo p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.dialog-demo .confirmation-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-demo .p-dialog .p-button {
+  min-width: 6rem;
+}
+.dialog-demo  {
+  .p-dialog-content{
+    display: grid;
+    min-height: 300px;
+    min-width: 500px;
+
+  }
+}
+
+
+
+
+
+.crud-demo {
+  .table-header {
+    flex-direction: column;
+    @media screen and (min-width: 768px) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row!important;
+    }
+  }
+
+  .product-image {
+    width: 100px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+
+  .p-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .p-dialog .product-image {
+    width: 150px;
+    margin: 0 auto 2rem auto;
+    display: block;
+  }
+
+  .confirmation-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-badge {
+    border-radius: 2px;
+    padding: .25em .5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+
+    &.status-instock {
+      background: #C8E6C9;
+      color: #256029;
+    }
+
+    &.status-outofstock {
+      background: #FFCDD2;
+      color: #C63737;
+    }
+
+    &.status-lowstock {
+      background: #FEEDAF;
+      color: #8A5340;
+    }
+  }
+
+  /* Responsive */
+  .datatable-responsive .p-datatable-tbody > tr > td .p-column-title {
+    display: none;
+  }
+
+  @media screen and (max-width: 960px) {
+    .p-datatable {
+      &.datatable-responsive {
+        .p-datatable-thead > tr > th,
+        .p-datatable-tfoot > tr > td {
+          display: none !important;
+        }
+
+        .p-datatable-tbody > tr {
+          border-bottom: 1px solid var(--surface-d);
+          > td {
+            text-align: left;
+            display: flex;
+            align-items: center;
+            border: 0 none !important;
+            width: 100% !important;
+            float: left;
+            clear: left;
+            border: 0 none;
+
+            .p-column-title {
+              padding: .4rem;
+              min-width: 30%;
+              display: inline-block;
+              margin: -.4rem 1rem -.4rem -.4rem;
+              font-weight: bold;
+            }
+
+            .p-progressbar {
+              margin-top: .5rem;
+            }
+
+            .actions {
+              display: flex;
+              flex-grow: 1;
+              justify-content: center;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+

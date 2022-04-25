@@ -1,0 +1,21 @@
+{
+  "name": "config",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "app.js",
+  "scripts": {
+    "start": "concurrently \"command1 arg\" \"command2 arg\"",
+    "start:dev": "",
+    "client": "",
+    "client:dev": "",
+    "adminka": "",
+    "adminka:dev": "",
+    "server": "npm run start --prefix server",
+    "server:dev": ""
+  },
+  "author": "alexey smirnov <alex27722@bk.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^7.1.0"
+  }
+}
