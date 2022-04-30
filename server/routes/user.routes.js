@@ -1,7 +1,6 @@
 const {check, validationResult} = require('express-validator');
 const {Router} = require('express');
 const bcrypt = require('bcryptjs');
-const config = require('config');
 const jwt = require('jsonwebtoken');
 const Company = require('../models/Company')
 const User = require('../models/User');
@@ -33,7 +32,7 @@ router.post(
             const {login, password} = req.body;
 
             const candidate = await User.findOne({login});
-            // console.log(candidate)
+
             if (candidate) {
                 return res.status(400).json({message: 'Такой пользователь уже существует'});
             }
@@ -94,7 +93,7 @@ router.post(
                     userId: user.id,
                     company: user.company
                 },
-                config.get('jwtSecret'),
+                process.env.JWT_SECRET,
                 {expiresIn: '30d'},
             );
 
