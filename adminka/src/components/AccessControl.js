@@ -6,9 +6,8 @@ const checkPermissions = (userPermissions, allowedPermissions) => {
         return true
     }
 
-    return userPermissions.some(permission =>{
-            console.log(allowedPermissions.includes(permission))
-            if (allowedPermissions.includes(permission)) return true
+    return userPermissions.some(permission => {
+        if (allowedPermissions.includes(permission)) return true
     })
 }
 

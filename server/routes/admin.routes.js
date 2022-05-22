@@ -58,9 +58,10 @@ router.post('/list', auth, async (req, res) => {
         const companies = await Company.find({})
         let arr = admins.map((admin) => {
             let companyName = companies.filter(company => company._id.toString() === admin.company.toString())[0].name
+            delete admin._doc.password
             return {...admin._doc, companyName}
         })
-
+        console.log(arr)
         res.json(arr)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
@@ -80,23 +81,40 @@ router.post('/info', auth, async (req, res) => {
 
 router.post('/edit', auth, async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        const admin = await Admin.findById(req.body.id);
-        const candidate = await Admin.findOne({login: req.body.login});
-        if (!candidate)
-            admin.login = req.body.login
-        admin.password = hashedPassword
-        admin.name = req.body.name;
-        admin.surname = req.body.surname;
-        admin.phoneNumber = req.body.phoneNumber;
-        admin.personnelNumber = req.body.personnelNumber;
-        admin.company = req.body.company
-        await admin.save();
-        if (candidate) {
-            res.status(201).json({message: 'Пользователь изменен ,логин занят'});
-        } else {
-            res.status(201).json({message: 'Пользователь изменен'});
+        console.log(req.body)
+        const {login, password, name, surname, phoneNumber, personnelNumber, companyName, _id} = req.body
+        const admin = await Admin.findById(_id);
+        if(admin && companyName){
+            const company= await Company.findOne({name:companyName})
+            admin.company=company._id
         }
+        if (admin.login !== login) {
+            const candidate = await Admin.findOne({login});
+            if (!candidate) {
+                admin.login = login
+            }
+        }
+        if (password) {
+            admin.password = await bcrypt.hash(password, 12);
+        }
+        if (name) {
+            admin.name = name;
+        }
+        if (surname) {
+            admin.surname = surname;
+        }
+        if (phoneNumber) {
+            admin.phoneNumber = phoneNumber;
+        }
+
+        if (personnelNumber) {
+            admin.personnelNumber = personnelNumber
+        }
+
+        await admin.save();
+
+        res.status(200).json({message: 'Пользователь изменен'});
+
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
     }

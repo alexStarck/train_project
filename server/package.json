@@ -21,6 +21,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "config": "^3.3.7",
     "dotenv": "^8.6.0",
     "nodemon": "^2.0.15"
   }

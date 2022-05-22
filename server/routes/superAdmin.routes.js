@@ -33,7 +33,6 @@ router.post(
                 return res.status(401).json({ message: 'Пользователь не найден' });
             }
             const isMatch = await bcrypt.compare(password, superAdmin.password);
-
             if (!isMatch) {
                 return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' });
             }
@@ -45,7 +44,6 @@ router.post(
                 config.get('jwtSecret'),
                 { expiresIn: '240h' },
             );
-            console.log(token)
 
             res.json({ token, userId: superAdmin.id  });
         } catch (e) {

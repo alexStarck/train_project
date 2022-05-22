@@ -32,19 +32,6 @@ import {AuthContext} from '../context/AuthContext'
 
      const adminItems=[
          {
-             label:'My Account',
-             icon:'pi pi-fw pi-user',
-             items:[
-                 {
-                     label:'House',
-                     icon:'pi pi-fw pi-home',
-                     command:()=>{
-                         history.push('/MyHousePage')
-                     }
-                 }
-             ]
-         },
-         {
              label:'Adminka',
              icon:'pi pi-fw pi-align-justify',
              items:[

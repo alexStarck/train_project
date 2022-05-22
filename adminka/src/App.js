@@ -10,66 +10,51 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 
-
-
-
-
 function App() {
-  const {token, login, logout, userId, ready} = useAuth()
-  const isAuthenticated = !!token
-  const routes = useRoutes(isAuthenticated )
+    const {token, login, logout, userId, ready} = useAuth()
+    const isAuthenticated = !!token
+    const routes = useRoutes(isAuthenticated)
 
     if (!ready) {
-        return <Loader />
+        return <Loader/>
     }
 
-if(isAuthenticated ){
-    return (
+    if (isAuthenticated) {
+        return (
 
 
             <AuthContext.Provider value={{
-                token, login, logout,ready, userId, isAuthenticated
+                token, login, logout, ready, userId, isAuthenticated
             }}>
                 <Router>
-                    {/*<div id="mainNav">*/}
-                    {/*    { isAuthenticated && <Menu /> }*/}
-                    {/*</div>*/}
                     <div className="login_page">
 
 
+                        <div id="mainArticle">
 
-                    <div id="mainArticle" >
-
-                        {routes}
-                    </div>
-                            <Menu id="mainNav"  />
-
-
+                            {routes}
+                        </div>
+                        <Menu id="mainNav"/>
 
 
                     </div>
-
 
 
                 </Router>
             </AuthContext.Provider>
 
 
-    )
-}else{
-    return (
+        )
+    } else {
+        return (
 
 
             <AuthContext.Provider value={{
-                token, login, logout,ready, userId, isAuthenticated
+                token, login, logout, ready, userId, isAuthenticated
             }}>
                 <Router>
-                    {/*<div id="mainNav">*/}
-                    {/*    { isAuthenticated && <Menu /> }*/}
-                    {/*</div>*/}
 
                     <div style={{
-                        // display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
 
@@ -78,14 +63,12 @@ if(isAuthenticated ){
                     </div>
 
 
-
-
                 </Router>
             </AuthContext.Provider>
 
 
-    )
-}
+        )
+    }
 
 }
 

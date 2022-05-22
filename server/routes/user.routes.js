@@ -17,7 +17,6 @@ router.post(
         check('login', 'Некорректный login').exists(),//.isEmail(),
         check('password', 'Минимальная длина пароля 6 символов').exists()
     ],
-    auth,
     async (req, res) => {
         try {
 

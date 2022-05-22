@@ -17,7 +17,8 @@ export const UserHomePage = () => {
             })
             setAdmin(fetched)
 
-        } catch (e) {}
+        } catch (e) {
+        }
     }, [request, userId, token])
 
     useEffect(() => {
@@ -25,19 +26,21 @@ export const UserHomePage = () => {
     }, [userId])
 
     if (loading) {
-        return <Loader />
+        return <Loader/>
     }
 
     return (
         <>
-            { loading && <Loader />}
-            { !loading && admin && (
-                <div style={{"display": "flex",
+            {loading && <Loader/>}
+            {!loading && admin && (
+                <div style={{
+                    "display": "flex",
                     "alignItems": "center",
-                    "justifyContent": "center"}}>
-                    <h1 >{admin.name}</h1>
+                    "justifyContent": "center"
+                }}>
+                    <h1>{admin.name}</h1>
                 </div>
-            ) }
+            )}
         </>
     )
 }

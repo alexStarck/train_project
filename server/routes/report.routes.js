@@ -17,7 +17,6 @@ router.post('/list', auth, async (req, res) => {
 
         let reports = []
         for (const user of users) {
-
             delete user._doc.password
 
             if (user._doc.reports.length > 0) {
@@ -60,11 +59,7 @@ router.post('/list', auth, async (req, res) => {
         }
 
 
-        if (reports.length > 0) {
-            res.json(reports);
-        } else {
-            res.status(500)
-        }
+        res.json(reports);
     } catch (e) {
 
         res.status(500).json({message: 'ошибка запроса списка отчетов'});
