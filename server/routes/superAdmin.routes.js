@@ -41,8 +41,8 @@ router.post(
                     userId: superAdmin.id,
                     company:null
                 },
-                process.env.JWT_SECRET,
-                { expiresIn: '240h' },
+                process.env.JWTSECRET,
+                { expiresIn: '24h' },
             );
 
             res.json({ token, userId: superAdmin.id  });

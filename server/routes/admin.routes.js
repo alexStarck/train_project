@@ -23,7 +23,7 @@ router.post(
                     message: 'Некорректный данные при создании',
                 });
             }
-
+            console.log(req.body)
             const {login, password} = req.body;
 
             const candidate = await Admin.findOne({login});
@@ -33,17 +33,15 @@ router.post(
             }
 
             const hashedPassword = await bcrypt.hash(password, 12);
-            const admin = new Admin({
+            await Admin.create({
                 login,
                 password: hashedPassword,
                 company: req.body.company,
                 name: req.body.name,
                 surname: req.body.surname,
-                phoneNumber: req.body.phone,
+                phoneNumber: req.body.phoneNumber,
                 personnelNumber: req.body.personnelNumber
             });
-
-            await admin.save();
 
             res.status(201).json({message: 'Пользователь создан'});
         } catch (e) {
@@ -61,7 +59,6 @@ router.post('/list', auth, async (req, res) => {
             delete admin._doc.password
             return {...admin._doc, companyName}
         })
-        console.log(arr)
         res.json(arr)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
@@ -81,13 +78,11 @@ router.post('/info', auth, async (req, res) => {
 
 router.post('/edit', auth, async (req, res) => {
     try {
-        console.log(req.body)
         const {login, password, name, surname, phoneNumber, personnelNumber, companyName, _id} = req.body
         const admin = await Admin.findById(_id);
-        if(admin && companyName){
-            const company= await Company.findOne({name:companyName})
-            console.log(company)
-            admin.company=company._id
+        if (admin && companyName) {
+            const company = await Company.findOne({name: companyName})
+            admin.company = company._id
         }
         if (admin.login !== login) {
             const candidate = await Admin.findOne({login});

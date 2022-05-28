@@ -7,7 +7,6 @@ const auth = require('./middleware/auth.middleware');
 const multer = require('multer')
 const {v4: uuidv4} = require('uuid');
 
-
 const app = express();
 
 
@@ -120,7 +119,7 @@ const PORT = process.env.PORT || 5000;
 async function start() {
     do {
         try {
-            await mongoose.connect(process.env.MONGO_URL, {
+            await mongoose.connect(process.env.MONGOURI, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,
