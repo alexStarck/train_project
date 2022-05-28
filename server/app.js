@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('config');
+require('dotenv').config()
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
@@ -111,16 +111,16 @@ app.get('/uploads/:file', function (req, res) {
     // })
 })
 
-if (process.env.NODE_ENV === 'production') {
-    app.use('/', express.static(path.join(__dirname, 'client', 'build')));
-}
+// if (process.env.NODE_ENV === 'production') {
+//     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
+// }
 
-const PORT = config.get('port') || 5000;
+const PORT = process.env.PORT || 5000;
 
 async function start() {
     do {
         try {
-            await mongoose.connect(config.get('mongoUri'), {
+            await mongoose.connect(process.env.MONGO_URL, {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useCreateIndex: true,

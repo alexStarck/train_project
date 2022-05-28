@@ -1,6 +1,5 @@
 const {Router} = require('express');
 const bcrypt = require('bcryptjs');
-const config = require('config');
 const jwt = require('jsonwebtoken');
 const {check, validationResult} = require('express-validator');
 const Admin = require('../models/Admin');
@@ -41,7 +40,7 @@ router.post(
 
 
                 },
-                config.get('jwtSecret'),
+                process.env.JWT_SECRET,
                 {expiresIn: '30d'},
             );
 

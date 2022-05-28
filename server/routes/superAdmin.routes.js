@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator');
 const { Router } = require('express');
-const config = require('config');
+
 const jwt = require('jsonwebtoken');
 const SuperAdmin = require('../models/SuperAdmin');
 const auth = require('../middleware/auth.middleware');
@@ -41,7 +41,7 @@ router.post(
                     userId: superAdmin.id,
                     company:null
                 },
-                config.get('jwtSecret'),
+                process.env.JWT_SECRET,
                 { expiresIn: '240h' },
             );
 
