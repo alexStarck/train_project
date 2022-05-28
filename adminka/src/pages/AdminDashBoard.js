@@ -113,11 +113,12 @@ export const AdminDashBoard = () => {
     const saveUser = useCallback(async () => {
         try {
             setSubmitted(true);
-            const fetched = await request('/api/admin/edit', 'POST', {...user}, {
+            const fetched = await request('/api/admin/edit', 'POST', {...user,companyName:valueCompany.name}, {
                 Authorization: `Bearer ${token}`
             })
             toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
             setUserEditDialog(false);
+            setValueCompany(null)
             setUser(emptyUser);
             fetchCompanies()
             fetchUsers()

@@ -86,6 +86,7 @@ router.post('/edit', auth, async (req, res) => {
         const admin = await Admin.findById(_id);
         if(admin && companyName){
             const company= await Company.findOne({name:companyName})
+            console.log(company)
             admin.company=company._id
         }
         if (admin.login !== login) {
