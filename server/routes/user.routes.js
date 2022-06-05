@@ -12,13 +12,13 @@ const router = Router();
 
 router.post(
     '/create',
+    auth,
     [
         check('login', 'Некорректный login').exists(),//.isEmail(),
         check('password', 'Минимальная длина пароля 6 символов').exists()
     ],
     async (req, res) => {
         try {
-
             const errors = validationResult(req);
 
             if (!errors.isEmpty()) {
@@ -37,7 +37,7 @@ router.post(
             }
 
             const hashedPassword = await bcrypt.hash(password, 12);
-            const user = await new User({
+            await User.create({
                 login,
                 password: hashedPassword,
                 name: req.body.name,
@@ -47,8 +47,6 @@ router.post(
                 personnelNumber: req.body.personnelNumber,
                 reports: []
             });
-
-            await user.save();
 
             res.status(201).json({message: 'Пользователь создан'});
         } catch (e) {

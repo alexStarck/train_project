@@ -289,9 +289,9 @@ export const TasksPage = () => {
                 <div className='p-col-6'>
                     <React.Fragment>
                         <Button label="Создать" icon="pi pi-plus" className="p-button-success p-mr-2"
-                                onClick={openNew}/>
+                                onClick={()=>console.log('create')}/>
                         <Button label="Удалить" icon="pi pi-trash" className="p-button-danger p-mr-2"
-                                onClick={confirmDeleteSelected} disabled={!selectedObjects || !selectedObjects.length}/>
+                                onClick={()=>console.log('delete')} disabled={!selectedObjects || !selectedObjects.length}/>
                     </React.Fragment>
                 </div>
 

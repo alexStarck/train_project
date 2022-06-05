@@ -13,50 +13,10 @@ router.post('/list', auth, async (req, res) => {
     try {
 
 
-        const users = await User.find({company: req.user.company})
+        const users = await Report.find({company: req.user.company})
 
         let reports = []
-        for (const user of users) {
-            delete user._doc.password
 
-            if (user._doc.reports.length > 0) {
-
-                for (const report of user._doc.reports) {
-                    function FormDate(d) {
-                        let month = String(d.getMonth() + 1);
-                        let day = String(d.getDate());
-                        const year = String(d.getFullYear());
-                        if (month.length < 2) month = '0' + month;
-                        if (day.length < 2) day = '0' + day;
-                        return `${day}.${month}.${year}`;
-                    }
-
-                    let obj = await Report.findById(report)
-
-                    let dateIn = FormDate(obj._doc.dateIn)
-
-                    let timeIn = obj._doc.dateIn.toString().split(' ')[4]
-                    if (obj._doc.hasOwnProperty('dateOut')) {
-                        let dateOut = FormDate(obj._doc.dateOut)
-                        let timeOut = obj._doc.dateOut.toString().split(' ')[4]
-                        reports.push({
-                            ...obj._doc,
-                            owner: user,
-                            dateIn: dateIn,
-                            timeIn: timeIn,
-                            dateOut: dateOut,
-                            timeOut: timeOut,
-                            status: 'завершен'
-                        })
-                    } else {
-                        reports.push({...obj._doc, owner: user, dateIn: dateIn, timeIn: timeIn, status: 'в работе'})
-                    }
-
-                }
-
-            }
-
-        }
 
 
         res.json(reports);
