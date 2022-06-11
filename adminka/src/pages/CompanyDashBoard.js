@@ -263,7 +263,7 @@ export const CompanyDashBoard = () => {
                 }}
                            dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} companies"
+                           currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} организаций"
                            globalFilter={globalFilter}
                            header={header}>
 

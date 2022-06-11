@@ -265,7 +265,7 @@ export const AdminDashBoard = () => {
                 }}
                            dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                           currentPageReportTemplate="Показано {first} из  {last} всего {totalRecords} администраторов"
+                           currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} администраторов"
                            globalFilter={globalFilter}
                            header={header}>
 
@@ -317,7 +317,7 @@ export const AdminDashBoard = () => {
                     <div className="p-field">
                         <label htmlFor="type">Организация</label>
                         <Dropdown value={valueCompany} options={companies} onChange={onValueCompositionChange}
-                                  optionLabel="name" placeholder="Select a value of companies"/>
+                                  optionLabel="name" placeholder="Выберете организацию"/>
                     </div>
                 )}
 
@@ -351,7 +351,7 @@ export const AdminDashBoard = () => {
                 </div>
                 <div className="p-field">
                     <label htmlFor="phoneNumber">Телефонный номер</label>
-                    <InputMask id="phone" mask="(999) 999-9999" placeholder="(999) 999-9999" value={user.phoneNumber}
+                    <InputMask id="phone" mask="999-999-9999" placeholder="999-999-9999" value={user.phoneNumber}
                                onChange={(e) => onInputChange(e, 'phoneNumber')} required autoFocus/>
                     {submitted && !user.phoneNumber && <small className="p-error">Поле обязательное</small>}
                 </div>
@@ -366,7 +366,7 @@ export const AdminDashBoard = () => {
                     <div className="p-field">
                         <label htmlFor="type">Организация</label>
                         <Dropdown value={valueCompany} options={companies} onChange={onValueCompositionChange}
-                                  optionLabel="name" placeholder="Select a value of companies"/>
+                                  optionLabel="name" placeholder="Выберете организацию"/>
                     </div>
                 )}
             </Dialog>
