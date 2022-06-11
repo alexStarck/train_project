@@ -1,110 +1,77 @@
-import React,{useState,useRef,useEffect,useCallback} from 'react'
-import {BrowserRouter as Router ,useHistory } from 'react-router-dom'
+import React, {useState, useRef, useEffect, useCallback} from 'react'
+import {BrowserRouter as Router} from 'react-router-dom'
 import {useRoutes} from './routes'
 import {useAuth} from './hooks/auth.hook'
 import {AuthContext} from './context/AuthContext'
-import {NavBar} from './components/NavBar'
 import classNames from 'classnames';
 import {Loader} from './components/Loader'
-import { CSSTransition } from 'react-transition-group';
+import {CSSTransition} from 'react-transition-group';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 import {AppTopbar} from './components/AppTopbar'
 import {AppMenu} from "./components/AppMenu";
-import {AppConfig} from "./components/AppConfig";
 import './layout/layout.scss';
 import {useHttp} from "./hooks/http.hook";
 
 
-
-
 function App() {
     const {token, login, logout, userId, ready} = useAuth()
-    const { request} = useHttp()
+    const {request} = useHttp()
     const isAuthenticated = !!token
-    const routes = useRoutes(isAuthenticated )
+    const routes = useRoutes(isAuthenticated)
     const [layoutMode, setLayoutMode] = useState('static');
     const [layoutColorMode, setLayoutColorMode] = useState('dark')
     const [inputStyle, setInputStyle] = useState('outlined');
     const [ripple, setRipple] = useState(false);
-    const [user,setUser]=useState({})
+    const [user, setUser] = useState({})
     const [sidebarActive, setSidebarActive] = useState(false);
     const sidebar = useRef();
 
-    const history = useHistory();
 
     let menuClick = false;
 
     useEffect(() => {
-        // let scrollPos = window.pageYOffset ||
-        //             document.documentElement.scrollTop ||
-        //             document.body.scrollTop;
-        // if(scrollPos>1){
-        //     window.scroll({
-        //         top: 0,
-        //         left: 0,
-        //         behavior: 'smooth'
-        //     });
-        //     window.scrollTo(0,1);
-        // }
         if (sidebarActive) {
-            // console.log('add class')
             addClass(document.body, "body-overflow-hidden");
         } else {
-            // console.log('remove class')
             removeClass(document.body, "body-overflow-hidden");
         }
     }, [sidebarActive]);
 
 
 
-    const onInputStyleChange = (inputStyle) => {
-        setInputStyle(inputStyle);
-    }
-
-
-
     const fetchUser = useCallback(async () => {
         try {
-            const fetched = await request('/api/admin/info', 'POST',null , {
+            const fetched = await request('/api/admin/info', 'POST', null, {
                 Authorization: `Bearer ${token}`
             })
             setUser(fetched)
-        } catch (e) {}
+        } catch (e) {
+        }
     }, [token, request, user])
 
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(isAuthenticated){
+        if (isAuthenticated) {
             fetchUser()
         }
 
 
-    },[token])
+    }, [token])
 
-    // const onRipple = (e) => {
-    //     PrimeReact.ripple = e.value;
-    //     setRipple(e.value)
-    // }
 
 
     const logoutHandler = () => {
         setSidebarActive(false)
         setUser({})
         logout()
-        // history.push('/')
+
     }
 
-    const onLayoutModeChange = (mode) => {
-        setLayoutMode(mode)
-    }
 
-    const onColorModeChange = (mode) => {
-        setLayoutColorMode(mode)
-    }
 
     const onWrapperClick = (event) => {
         if (!menuClick && layoutMode === "overlay") {
@@ -137,61 +104,61 @@ function App() {
 
     const menu = [
         {
-            label:'Мой аккаунт',
-            icon:'pi pi-fw pi-user',
-            disabled:true,
-            // command:()=>{
-            //     props.ChangeHandler()
-            // }
+            label: 'Мой аккаунт',
+            icon: 'pi pi-fw pi-user',
+            disabled: true,
 
         },
         {
-            label:'Администрирование',
-            icon:'pi pi-fw pi-align-justify',
-            items:[
+            label: 'Администрирование',
+            icon: 'pi pi-fw pi-align-justify',
+            items: [
                 {
-                    label:'Сотрудники',
-                    icon:'pi pi-fw pi-users',
-                    to:'/UserDashBoard'
+                    label: 'Сотрудники',
+                    icon: 'pi pi-fw pi-users',
+                    to: '/UserDashBoard'
                 },
                 {
-                    label:'Отчеты',
-                    icon:'pi pi-fw pi-download',
-                    to:'/ReportsPage'
+                    label: 'Отчеты',
+                    icon: 'pi pi-fw pi-download',
+                    to: '/ReportsPage'
                 }
-
             ]
         },
         {
-            label:'Сервисы',
-            icon:'pi pi-fw pi-align-justify',
-            items:[
+            label: 'Сервисы',
+            icon: 'pi pi-fw pi-align-justify',
+            items: [
                 {
-                    label:'Поезда',
-                    icon:'pi pi-fw pi-globe',
-                    to:'/TrainPage'
-                },{
-                    label:'Задачи',
-                    icon:'pi pi-fw pi-globe',
-                    to:'/TasksPage'
+                    label: 'Поезда',
+                    icon: 'pi pi-fw pi-align-justify',
+                    to: '/TrainPage'
+                }, {
+                    label: 'Задачи для вагонов',
+                    icon: 'pi pi-fw pi-align-justify',
+                    to: '/TasksPage'
+                }, {
+                    label: 'Типы вагонов',
+                    icon: 'pi pi-fw pi-align-justify',
+                    to: '/TypeRailwayCarriage'
                 }
 
             ]
         },
 
         {
-            label:'Выход',
-            icon:'pi pi-fw pi-power-off',
-            command:(event)=>{logoutHandler()}
+            label: 'Выход',
+            icon: 'pi pi-fw pi-power-off',
+            command: (event) => {
+                logoutHandler()
+            }
         }
     ]
 
-    const disableScroll=()=>{
-        let paddingOffSet=window.innerWidth-document.body.offsetWidth+'px'
-        // console.log(paddingOffSet)
-        let scale='scale(1)'
-        document.body.style.webkitTransform=scale
-        document.body.scroll.zoom=1.0
+    const disableScroll = () => {
+        let scale = 'scale(1)'
+        document.body.style.webkitTransform = scale
+        document.body.scroll.zoom = 1.0
     }
 
     const addClass = (element, className) => {
@@ -227,32 +194,27 @@ function App() {
     });
 
     if (!ready) {
-        return <Loader />
+        return <Loader/>
     }
 
 
-    if(isAuthenticated ){
-    return (
-
+    if (isAuthenticated) {
+        return (
 
 
             <AuthContext.Provider value={{
-                token, login, logout,ready, userId, isAuthenticated
-                }}>
+                token, login, logout, ready, userId, isAuthenticated
+            }}>
                 <Router>
                     {disableScroll()}
 
 
-
                     <div className={wrapperClass} onClick={onWrapperClick}>
-                        <AppTopbar onToggleMenu={onToggleMenu} name={user.name}  />
-                        <CSSTransition classNames="layout-sidebar" timeout={{ enter: 1200, exit: 1200 }} in={isSidebarVisible()} unmountOnExit>
-                            <div ref={sidebar} className={sidebarClassName} onClick={onSidebarClick} >
-                                {/*<div className="layout-logo" style={{cursor: 'pointer'}} onClick={() => history.push('/')}>*/}
-                                {/*    <img alt="Logo" src={logo} />*/}
-                                {/*</div>*/}
-                                {/*<AppProfile />*/}
-                                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
+                        <AppTopbar onToggleMenu={onToggleMenu} name={user.name}/>
+                        <CSSTransition classNames="layout-sidebar" timeout={{enter: 1200, exit: 1200}}
+                                       in={isSidebarVisible()} unmountOnExit>
+                            <div ref={sidebar} className={sidebarClassName} onClick={onSidebarClick}>
+                                <AppMenu model={menu} onMenuItemClick={onMenuItemClick}/>
                             </div>
                         </CSSTransition>
                         <div className="layout-main">
@@ -260,62 +222,34 @@ function App() {
                         </div>
                     </div>
 
-                    {/*<div className="login_page p-grid p-dir-col">*/}
-
-
-                    {/*        /!*<NavBar className='p-col' width='100%'   />*!/*/}
-                    {/*        <div className='p-col'>*/}
-                    {/*            <NavBar />*/}
-                    {/*            /!*{routes}*!/*/}
-                    {/*        </div>*/}
-                    {/*        /!*<Menu className='mainNav p-col-fixed' style={{width:'100px'}} />*!/*/}
-                    {/*        <div className='Page p-col' >*/}
-
-                    {/*            {routes}*/}
-                    {/*        </div>*/}
-
-
-
-
-
-                    {/*</div>*/}
 
 
 
                 </Router>
             </AuthContext.Provider>
 
-    )
-}else{
-    return (
+        )
+    } else {
+        return (
 
 
             <AuthContext.Provider value={{
-                token, login, logout,ready, userId, isAuthenticated
+                token, login, logout, ready, userId, isAuthenticated
             }}>
                 <Router>
-                    {/*<div id="mainNav">*/}
-                    {/*    { isAuthenticated && <Menu /> }*/}
-                    {/*</div>*/}
-
                     <div style={{
-                        // display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
 
                     }}>
                         {routes}
                     </div>
-
-
-
-
                 </Router>
             </AuthContext.Provider>
 
 
-    )
-}
+        )
+    }
 
 }
 

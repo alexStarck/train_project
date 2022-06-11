@@ -23,7 +23,6 @@ router.post(
                     message: 'Некорректный данные при создании',
                 });
             }
-            console.log(req.body)
             const {login, password} = req.body;
 
             const candidate = await Admin.findOne({login});
@@ -43,7 +42,7 @@ router.post(
                 personnelNumber: req.body.personnelNumber
             });
 
-            res.status(201).json({message: 'Пользователь создан'});
+            res.status(201).json({message: 'Администратор создан'});
         } catch (e) {
             res.status(500).json({message: 'Что-то пошло не так, попробуйте снова'});
         }
@@ -52,12 +51,13 @@ router.post(
 
 router.post('/list', auth, async (req, res) => {
     try {
-        const admins = await Admin.find({})
-        const companies = await Company.find({})
-        let arr = admins.map((admin) => {
-            let companyName = companies.filter(company => company._id.toString() === admin.company.toString())[0].name
-            delete admin._doc.password
-            return {...admin._doc, companyName}
+        const admins = await Admin.find({}, {password: 0}).populate('company', {name: 1, _id: 0})
+
+        const arr = admins.map(admin => {
+            const obj = JSON.parse(JSON.stringify(admin))
+            obj.companyName = admin.company.name
+            delete obj.company
+            return obj
         })
         res.json(arr)
     } catch (e) {
@@ -67,8 +67,7 @@ router.post('/list', auth, async (req, res) => {
 
 router.post('/info', auth, async (req, res) => {
     try {
-        const admin = await Admin.findById(req.user.userId);
-        delete admin._doc.password
+        const admin = await Admin.findById(req.user.userId,{password:0});
         res.json(admin);
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
@@ -109,7 +108,7 @@ router.post('/edit', auth, async (req, res) => {
 
         await admin.save();
 
-        res.status(200).json({message: 'Пользователь изменен'});
+        res.status(200).json({message: 'Администратор изменен'});
 
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
@@ -118,9 +117,17 @@ router.post('/edit', auth, async (req, res) => {
 
 router.post('/delete', auth, async (req, res) => {
     try {
-        const admin = await Admin.findById(req.body.user._id);
-        await admin.remove();
-        res.status(201).json({message: 'Пользователь удален'});
+        await Admin.deleteOne({_id:req.body._id});
+        res.status(200).json({message: 'Администратор удален'});
+    } catch (e) {
+        res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
+    }
+});
+
+router.post('/deleteM', auth, async (req, res) => {
+    try {
+        await Admin.deleteMany({_id:req.body})
+        res.status(200).json({message: 'Администраторы удалены'});
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
     }

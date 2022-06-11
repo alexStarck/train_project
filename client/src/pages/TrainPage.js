@@ -53,12 +53,10 @@ export const TrainPage = () => {
     }, [token, request, objectsList])
     const fetchClasses = useCallback(async () => {
         try {
-            const fetched = await request('/api/typeOfElement/list', 'POST', null, {
+            const fetched = await request('/api/typeOfElement', 'GET', null, {
                 Authorization: `Bearer ${token}`
             })
-            if (JSON.stringify(fetched) !== JSON.stringify(classList)) {
-                setClassList(fetched)
-            }
+            setClassList(fetched)
         } catch (e) {
         }
     }, [token, request, classList])
@@ -67,7 +65,7 @@ export const TrainPage = () => {
     useEffect(() => {
         fetchObjects()
         fetchClasses()
-    }, [token]);
+    }, []);
 
 
     const openNew = () => {

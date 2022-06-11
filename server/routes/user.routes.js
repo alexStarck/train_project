@@ -104,12 +104,9 @@ router.post(
 
 router.post('/list', auth, async (req, res) => {
     try {
-        const users = await User.find({company: req.user.company})
-        let arr = users.map((user) => {
-            user._doc.password = ''
-            return {...user._doc}
-        })
-        res.json(arr)
+        const users = await User.find({company: req.user.company}, {password: 0})
+        // console.log(users)
+        res.json(users)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
     }
@@ -117,14 +114,19 @@ router.post('/list', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
     try {
-        const users = await User.find({})
-        const companies = await Company.find({})
+        console.log('tuttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt')
+        const users = await User.find({},{password:0}).populate('company')
+        console.log('users')
+        console.log(users)
         let arr = users.map((user) => {
-            let companyName = companies.filter(company => company._id.toString() === user.company.toString())[0].name
-            return {...user._doc, companyName}
+            const obj = JSON.parse(JSON.stringify(user))
+            obj.companyName = user.company.name
+            delete obj.company
+            return obj
         })
+        console.log('! users')
+        console.log(arr)
         res.json(arr)
-
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
     }
@@ -148,21 +150,26 @@ router.post('/info', auth, async (req, res) => {
 
 router.post('/edit', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.body._id);
-
-
-        let isLogin = await User.findOne({login: req.body.login});
-        if (!isLogin) {
-            user.login = req.body.login;
+        const {_id,login,password,name,surname,phoneNumber,personnelNumber}=req.body
+        const user = await User.findById(_id);
+        if(user.login!==login){
+            let isLogin = await User.findOne({login: req.body.login});
+            if (!isLogin) {
+                user.login = req.body.login;
+            }
         }
-        const hashedPassword = await bcrypt.hash(req.body.password, 12);
-        if (req.body.password !== '' && req.body.password.length > 6) {
-            user.password = hashedPassword;
+        if(password){
+            const hashedPassword = await bcrypt.hash(password, 12);
+            if (password !== '' && password.length > 6) {
+                user.password = hashedPassword;
+            }
         }
-        user.name = req.body.name;
-        user.surname = req.body.surname;
-        user.phoneNumber = req.body.phoneNumber;
-        user.personnelNumber = req.body.personnelNumber;
+
+        if(name) user.name=name
+        if(surname) user.surname=surname
+        if(phoneNumber) user.phoneNumber=phoneNumber
+        if(personnelNumber) user.personnelNumber=personnelNumber
+
         await user.save();
         res.status(201).json({message: 'Пользователь изменен'});
     } catch (e) {
@@ -184,7 +191,6 @@ router.post('/delete', auth, async (req, res) => {
 router.post('/deleteM', auth, async (req, res) => {
     try {
         const user = await User.deleteMany({_id: req.body});
-
         res.status(201).json({message: 'Пользователи удалены'});
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});

@@ -1,11 +1,9 @@
 import React from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
 import {AuthPage} from './pages/AuthPage'
-import {PdfPage} from './pages/PdfPage'
-import {ImagePage} from './pages/ImagePage'
 import {TrainPage} from './pages/TrainPage'
 import {TasksPage} from './pages/TasksPage'
-import {UserHomePage} from "./pages/UserHomePage";
+import {TypeRailwayCarriage} from "./pages/TypeRailwayCarriage";
 import {UserDashBoard} from "./pages/UserDashBoard";
 import {ReportsPage} from "./pages/ReportsPage"
 
@@ -17,8 +15,8 @@ export const useRoutes = (isAuthenticated) => {
                     <Route path="/TrainPage"  component={TrainPage}/>
                     <Route path="/TasksPage"  component={TasksPage}/>
                     <Route path="/ReportsPage"  component={ReportsPage}/>
+                    <Route path="/TypeRailwayCarriage" component={TypeRailwayCarriage} />
                     <Route path="/UserDashBoard" component={UserDashBoard}/>
-                    <Route path="/MyHousePage" component={UserHomePage} />
                     <Redirect to="/UserDashBoard" />
         </Switch>
     )

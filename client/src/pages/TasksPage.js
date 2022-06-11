@@ -97,19 +97,12 @@ export const TasksPage = () => {
 
     const deleteObject = useCallback(async () => {
         try {
-
-
             const fetched = await request('/api/task/delete', 'POST', {...object}, {
                 Authorization: `Bearer ${token}`
             })
-
-
             setDeleteObjectDialog(false);
             setObject([]);
-
-
             toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
-            //fetchUsers()
         } catch (e) {
         }
     }, [token, request, object])
@@ -117,17 +110,11 @@ export const TasksPage = () => {
 
     const deleteSelectedObjects = useCallback(async () => {
         try {
-
-
             const fetched = await request('/api/task/deleteM', 'POST', selectedObjects, {
                 Authorization: `Bearer ${token}`
             })
-
-
             setDeleteObjectsDialog(false);
             setSelectedObjects(null);
-
-
             toast.current.show({
                 severity: 'success', summary:
                     'Successful', detail: fetched.message, life: 3000

@@ -3,27 +3,23 @@ const auth = require('../middleware/auth.middleware');
 const TypeOfElement = require('../models/TypeOfElement')
 const router = Router();
 
-router.post('/list', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
-
-        const typeOfElement = await TypeOfElement.find({})
-
-        let arr = []
-        for (const type of typeOfElement) {
-            arr.push(type.Class)
-        }
-        res.json(arr);
+        const typesOfElement = await TypeOfElement.find({company:req.user.company})
+        console.log(typesOfElement)
+        res.json(typesOfElement);
     } catch (e) {
         res.status(500).json({message: 'Error  Train post '});
     }
 });
 
-router.post('/info', auth, async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     try {
-        const report = await Report.findById(req.body.id)
+        console.log(req.param)
+        // const report = await Report.findById(req.body.id)
 
 
-        res.json(report);
+        res.json({});
     } catch (e) {
         res.status(500).json({message: 'Error  Train post '});
     }
