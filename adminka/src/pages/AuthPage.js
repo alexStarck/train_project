@@ -23,7 +23,6 @@ export const AuthPage = () => {
   const loginHandler = async () => {
       try {
           const data = await request('/api/superAdmin/login', 'POST', {...form})
-          console.log(data)
           if(data){
               auth.login(data.token, data.userId)
           }
@@ -67,7 +66,7 @@ export const AuthPage = () => {
 
                }} >
 
-              <h5 className="p-field p-text-center " style={{height:'30px',textAlign:'center'}}> Log in </h5>
+              <h5 className="p-field p-text-center " style={{height:'30px',textAlign:'center'}}> Вход </h5>
               <span className="p-float-label" style={{height:'60px'}}>
                      <InputText
                          className="p-field "
@@ -79,7 +78,7 @@ export const AuthPage = () => {
                          aria-describedby="username2-help"
                          onKeyDown={keyLoginHandler}
                      />
-                    <label htmlFor="in">Login</label>
+                    <label htmlFor="in">Логин</label>
               </span>
               {/*<span className="p-float-label">*/}
               {/*       */}
@@ -97,14 +96,14 @@ export const AuthPage = () => {
                         onChange={changeHandler}
                         onKeyDown={keyLoginHandler}
                     />
-                    <label htmlFor="in">Password</label>
+                    <label htmlFor="in">Пароль</label>
               </span>
 
 
 
 
               <Button
-                  label="Log in "
+                  label="войти"
                   className="p-field"
                   disabled={loading}
                   onClick={loginHandler}

@@ -32,17 +32,17 @@ import {AuthContext} from '../context/AuthContext'
 
      const adminItems=[
          {
-             label:'Adminka',
+             label:'Меню',
              icon:'pi pi-fw pi-align-justify',
              items:[
                 {
-                     label:'Admin DashBoard',
+                     label:'Администраторы',
                      icon:'pi pi-fw pi-users',
                      command:()=>{
                          history.push('/AdminDashBoard')
                      }
                  },{
-                     label:'Company DashBoard',
+                     label:'Организации',
                      icon:'pi pi-fw pi-home',
                      command:()=>{
                          history.push('/CompanyDashBoard')
@@ -52,7 +52,7 @@ import {AuthContext} from '../context/AuthContext'
              ]
          },
          {
-             label:'Quit',
+             label:'Выход',
              icon:'pi pi-fw pi-power-off',
              command:(event)=>{logoutHandler()}
          }

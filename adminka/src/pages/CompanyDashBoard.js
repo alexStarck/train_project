@@ -6,10 +6,8 @@ import {Column} from 'primereact/column';
 import {Toast} from 'primereact/toast';
 import {Button} from 'primereact/button';
 import {Toolbar} from 'primereact/toolbar';
-import {InputMask} from 'primereact/inputmask';
 import {Dialog} from 'primereact/dialog';
 import {InputText} from 'primereact/inputtext';
-import {Password} from 'primereact/password';
 
 
 export const CompanyDashBoard = () => {
@@ -83,19 +81,6 @@ export const CompanyDashBoard = () => {
         }
     }, [token, request, company])
 
-    const findUsers = useCallback(async (rowData) => {
-        try {
-            setSubmitted(true);
-            const fetched = await request('/api/company/find/users', 'POST', {...rowData}, {
-                Authorization: `Bearer ${token}`
-            })
-
-            toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
-            return fetched
-
-        } catch (e) {
-        }
-    }, [token, request])
 
     const saveCompany = useCallback(async () => {
         try {
@@ -171,8 +156,8 @@ export const CompanyDashBoard = () => {
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew}/>
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected}
+                <Button label="Создить" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew}/>
+                <Button label="Удалить" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected}
                         disabled={!selectedCompanies || !selectedCompanies.length}/>
             </React.Fragment>
         )
@@ -233,7 +218,7 @@ export const CompanyDashBoard = () => {
 
     const header = (
         <div className="table-header">
-            <h5 className="p-m-0">Manage Companies</h5>
+            <h5 className="p-m-0">Управление Организациями</h5>
             <span className="p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..."/>
@@ -242,26 +227,26 @@ export const CompanyDashBoard = () => {
     );
     const companyEditDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveCompany}/>
+            <Button label="Отменить" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
+            <Button label="Сохранить" icon="pi pi-check" className="p-button-text" onClick={saveCompany}/>
         </React.Fragment>
     );
     const companyDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={createCompany}/>
+            <Button label="Отменить" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
+            <Button label="Создать" icon="pi pi-check" className="p-button-text" onClick={createCompany}/>
         </React.Fragment>
     );
     const deleteCompanyDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCompanyDialog}/>
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteCompany}/>
+            <Button label="Нет" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCompanyDialog}/>
+            <Button label="Да" icon="pi pi-check" className="p-button-text" onClick={deleteCompany}/>
         </React.Fragment>
     );
     const deleteCompaniesDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCompaniesDialog}/>
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedCompanies}/>
+            <Button label="Нет" icon="pi pi-times" className="p-button-text" onClick={hideDeleteCompaniesDialog}/>
+            <Button label="Да" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedCompanies}/>
         </React.Fragment>
     );
 
@@ -283,65 +268,64 @@ export const CompanyDashBoard = () => {
                            header={header}>
 
                     <Column selectionMode="multiple" headerStyle={{width: '3rem'}}/>
-                    <Column field="_id" header="id" sortable/>
-                    <Column field="name" header="Name" sortable/>
-                    <Column field="nameObject" header="Name Object" sortable/>
-                    <Column field="nameObject" header="Admins" body={adminsBodyTemplate}/>
-                    <Column field="nameObject" header="Users" body={usersBodyTemplate}/>
+                    <Column field="name" header="Название" sortable/>
+                    <Column field="nameObject" header="Полное название" sortable/>
+                    <Column field="admins" header="Админов" body={adminsBodyTemplate}/>
+                    <Column field="users" header="Пользователей" body={usersBodyTemplate}/>
                     <Column body={actionBodyTemplate}/>
                 </DataTable>
             </div>
 
-            <Dialog visible={companyEditDialog} style={{width: '450px'}} header="Company Details" modal
+            <Dialog visible={companyEditDialog} style={{width: '450px'}} header="Редактирование Организации" modal
                     className="p-fluid" footer={companyEditDialogFooter} onHide={hideDialog}>
 
 
                 <div className="p-field">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">Название</label>
                     <InputText id="name" value={company.name} onChange={(e) => onInputChange(e, 'name')} required
                                autoFocus/>
-                    {submitted && !company.name && <small className="p-error">Name is required.</small>}
+                    {submitted && !company.name && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="name">Name Object</label>
+                    <label htmlFor="name">Полное название</label>
                     <InputText id="nameObject" value={company.nameObject}
                                onChange={(e) => onInputChange(e, 'nameObject')} required autoFocus/>
-                    {submitted && !company.nameObject && <small className="p-error">Name Object is required.</small>}
+                    {submitted && !company.nameObject && <small className="p-error">Поле обязательное</small>}
                 </div>
 
 
             </Dialog>
 
-            <Dialog visible={companyDialog} style={{width: '450px'}} header="Company Details" modal className="p-fluid"
+            <Dialog visible={companyDialog} style={{width: '450px'}} header="Создание Организации" modal className="p-fluid"
                     footer={companyDialogFooter} onHide={hideDialog}>
                 <div className="p-field">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">Название</label>
                     <InputText id="name" value={company.name} onChange={(e) => onInputChange(e, 'name')} required
                                autoFocus/>
-                    {submitted && !company.name && <small className="p-error">Name is required.</small>}
+                    {submitted && !company.name && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="name">Name Object</label>
+                    <label htmlFor="name">Полное название</label>
                     <InputText id="nameObject" value={company.nameObject}
                                onChange={(e) => onInputChange(e, 'nameObject')} required autoFocus/>
-                    {submitted && !company.nameObject && <small className="p-error">Name Object is required.</small>}
+                    {submitted && !company.nameObject && <small className="p-error">Поле обязательное</small>}
                 </div>
 
             </Dialog>
 
-            <Dialog visible={deleteCompanyDialog} style={{width: '450px'}} header="Confirm" modal
+            <Dialog visible={deleteCompanyDialog} style={{width: '450px'}} header="Подтверждение удаления" modal
                     footer={deleteCompanyDialogFooter} onHide={hideDeleteCompanyDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>
-                    {company && <span>Are you sure you want to delete <b>{company.name}</b>?</span>}
+                    {company && <span>Удалить выбранную организацию <b>{company.name}</b>?</span>}
                 </div>
             </Dialog>
 
-            <Dialog visible={deleteCompaniesDialog} style={{width: '450px'}} header="Confirm" modal
+            <Dialog visible={deleteCompaniesDialog} style={{width: '450px'}} header="Подтверждение удаления" modal
                     footer={deleteCompaniesDialogFooter} onHide={hideDeleteCompaniesDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>
-                    {company && <span>Are you sure you want to delete the selected companies?</span>}
+                    {company && <span>Удалить выбранные организации ?</span>}
                 </div>
             </Dialog>
         </div>

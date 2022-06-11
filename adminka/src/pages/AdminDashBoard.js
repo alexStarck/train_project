@@ -98,12 +98,11 @@ export const AdminDashBoard = () => {
             const fetched = await request('/api/admin/create', 'POST', {...user}, {//,company:valueCompany._id
                 Authorization: `Bearer ${token}`
             })
-            toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
+            toast.current.show({severity: 'success', summary: 'Создано', detail: fetched.message, life: 3000});
             setUserDialog(false);
-            // setCompanies(null)
-            //setValueCompany()
+            setValueCompany(null)
             setUser(emptyUser);
-
+            fetchCompanies()
             fetchUsers()
         } catch (e) {
         }
@@ -116,7 +115,7 @@ export const AdminDashBoard = () => {
             const fetched = await request('/api/admin/edit', 'POST', {...user,companyName:valueCompany.name}, {
                 Authorization: `Bearer ${token}`
             })
-            toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
+            toast.current.show({severity: 'success', summary: 'Изменено', detail: fetched.message, life: 3000});
             setUserEditDialog(false);
             setValueCompany(null)
             setUser(emptyUser);
@@ -148,7 +147,7 @@ export const AdminDashBoard = () => {
             setUser(emptyUser);
             fetchCompanies()
             fetchUsers()
-            toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
+            toast.current.show({severity: 'success', summary: 'Удален', detail: fetched.message, life: 3000});
         } catch (e) {
         }
     }, [token, request, user])
@@ -169,7 +168,7 @@ export const AdminDashBoard = () => {
             setSelectedUsers(null);
             fetchCompanies()
             fetchUsers()
-            toast.current.show({severity: 'success', summary: 'Successful', detail: fetched.message, life: 3000});
+            toast.current.show({severity: 'success', summary: 'Удалены', detail: fetched.message, life: 3000});
 
         } catch (e) {
         }
@@ -193,8 +192,8 @@ export const AdminDashBoard = () => {
     const leftToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <Button label="New" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew}/>
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected}
+                <Button label="Создать" icon="pi pi-plus" className="p-button-success p-mr-2" onClick={openNew}/>
+                <Button label="Удалить" icon="pi pi-trash" className="p-button-danger" onClick={confirmDeleteSelected}
                         disabled={!selectedUsers || !selectedUsers.length}/>
             </React.Fragment>
         )
@@ -221,7 +220,7 @@ export const AdminDashBoard = () => {
 
     const header = (
         <div className="table-header">
-            <h5 className="p-m-0">Manage Admins</h5>
+            <h5 className="p-m-0">Управление Администраторами</h5>
             <span className="p-input-icon-left">
                 <i className="pi pi-search"/>
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..."/>
@@ -230,26 +229,26 @@ export const AdminDashBoard = () => {
     );
     const userEditDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={saveUser}/>
+            <Button label="Отменить" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
+            <Button label="Сохранить" icon="pi pi-check" className="p-button-text" onClick={saveUser}/>
         </React.Fragment>
     );
     const userDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={createUser}/>
+            <Button label="Отменить" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
+            <Button label="Создать" icon="pi pi-check" className="p-button-text" onClick={createUser}/>
         </React.Fragment>
     );
     const deleteUserDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUserDialog}/>
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteUser}/>
+            <Button label="Нет" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUserDialog}/>
+            <Button label="Да" icon="pi pi-check" className="p-button-text" onClick={deleteUser}/>
         </React.Fragment>
     );
     const deleteUsersDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUsersDialog}/>
-            <Button label="Yes" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedProducts}/>
+            <Button label="Нет" icon="pi pi-times" className="p-button-text" onClick={hideDeleteUsersDialog}/>
+            <Button label="Да" icon="pi pi-check" className="p-button-text" onClick={deleteSelectedProducts}/>
         </React.Fragment>
     );
 
@@ -266,127 +265,125 @@ export const AdminDashBoard = () => {
                 }}
                            dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} admins"
+                           currentPageReportTemplate="Показано {first} из  {last} всего {totalRecords} администраторов"
                            globalFilter={globalFilter}
                            header={header}>
 
                     <Column selectionMode="multiple" headerStyle={{width: '3rem'}}/>
-                    <Column field="personnelNumber" header="PersonnelNumber" sortable/>
-                    <Column field="login" header="Login" sortable/>
-                    <Column field="name" header="Name" sortable/>
-                    <Column field="surname" header="Surname" sortable/>
-                    <Column field="companyName" header="Company" sortable/>
+                    <Column field="personnelNumber" header="Персональный номер" sortable/>
+                    <Column field="login" header="логин" sortable/>
+                    <Column field="name" header="Имя" sortable/>
+                    <Column field="surname" header="Фамилия" sortable/>
+                    <Column field="companyName" header="Компания" sortable/>
                     <Column body={actionBodyTemplate}/>
                 </DataTable>
             </div>
 
-            <Dialog visible={userEditDialog} style={{width: '450px'}} header="User Details" modal className="p-fluid"
+            <Dialog visible={userEditDialog} style={{width: '450px'}} header="Редактирование Администратора" modal className="p-fluid"
                     footer={userEditDialogFooter} onHide={hideDialog}>
                 <div className="p-field">
-                    <label htmlFor="login">login</label>
+                    <label htmlFor="login">Логин</label>
                     <InputText id="login" value={user.login} onChange={(e) => onInputChange(e, 'login')} required
                                autoFocus/>
-                    {submitted && !user.login && <small className="p-error">login is required.</small>}
+                    {submitted && !user.login && <small className="p-error">Поле обязательное</small>}
                 </div>
 
                 <div className="p-field">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">Имя</label>
                     <InputText id="name" value={user.name} onChange={(e) => onInputChange(e, 'name')} required
                                autoFocus/>
-                    {submitted && !user.name && <small className="p-error">Name is required.</small>}
+                    {submitted && !user.name && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="surname">Surname</label>
+                    <label htmlFor="surname">Фамилия</label>
                     <InputText id="surname" value={user.surname} onChange={(e) => onInputChange(e, 'surname')} required
                                autoFocus/>
-                    {submitted && !user.surname && <small className="p-error">Surname is required.</small>}
+                    {submitted && !user.surname && <small className="p-error">Поле обязательное</small>}
                 </div>
 
                 <div className="p-field">
-                    <label htmlFor="phoneNumber">phoneNumber</label>
+                    <label htmlFor="phoneNumber">Телефонный номер</label>
                     <InputMask id="phone" mask="(999) 999-9999" placeholder="(999) 999-9999" value={user.phoneNumber}
                                onChange={(e) => onInputChange(e, 'phoneNumber')} required autoFocus/>
                 </div>
                 <div className="p-field">
-                    <label htmlFor="personnelNumber">personnelNumber</label>
+                    <label htmlFor="personnelNumber">Персональный номер</label>
                     <InputText id="personnelNumber" value={user.personnelNumber}
                                onChange={(e) => onInputChange(e, 'personnelNumber')} required autoFocus/>
                     {submitted && !user.personnelNumber &&
-                    <small className="p-error">PersonnelNumber is required.</small>}
+                    <small className="p-error">Поле обязательное</small>}
                 </div>
                 {companies !== null && (
                     <div className="p-field">
-                        <label htmlFor="type">Company</label>
+                        <label htmlFor="type">Организация</label>
                         <Dropdown value={valueCompany} options={companies} onChange={onValueCompositionChange}
                                   optionLabel="name" placeholder="Select a value of companies"/>
-                        {/*{submitted && !object.type && <small className="p-error">type is required.</small>}*/}
                     </div>
                 )}
 
 
             </Dialog>
 
-            <Dialog visible={userDialog} style={{width: '450px'}} header="User Details" modal className="p-fluid"
+            <Dialog visible={userDialog} style={{width: '450px'}} header="Создание Администратора" modal className="p-fluid"
                     footer={userDialogFooter} onHide={hideDialog}>
                 <div className="p-field">
-                    <label htmlFor="login">login</label>
+                    <label htmlFor="login">Логин</label>
                     <InputText id="login" value={user.login} onChange={(e) => onInputChange(e, 'login')} required
                                autoFocus/>
-                    {submitted && !user.login && <small className="p-error">login is required.</small>}
+                    {submitted && !user.login && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">Пароль</label>
                     <Password value={user.password} onChange={(e) => onInputChange(e, 'password')}/>
-                    {submitted && !user.password && <small className="p-error">Password is required.</small>}
+                    {submitted && !user.password && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="name">Имя</label>
                     <InputText id="name" value={user.name} onChange={(e) => onInputChange(e, 'name')} required
                                autoFocus/>
-                    {submitted && !user.name && <small className="p-error">Name is required.</small>}
+                    {submitted && !user.name && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="surname">Surname</label>
+                    <label htmlFor="surname">Фамилия</label>
                     <InputText id="surname" value={user.surname} onChange={(e) => onInputChange(e, 'surname')} required
                                autoFocus/>
-                    {submitted && !user.surname && <small className="p-error">Surname is required.</small>}
+                    {submitted && !user.surname && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="phoneNumber">phoneNumber</label>
+                    <label htmlFor="phoneNumber">Телефонный номер</label>
                     <InputMask id="phone" mask="(999) 999-9999" placeholder="(999) 999-9999" value={user.phoneNumber}
                                onChange={(e) => onInputChange(e, 'phoneNumber')} required autoFocus/>
-                    {submitted && !user.phoneNumber && <small className="p-error">PhoneNumber is required.</small>}
+                    {submitted && !user.phoneNumber && <small className="p-error">Поле обязательное</small>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="personnelNumber">personnelNumber</label>
+                    <label htmlFor="personnelNumber">Персональный номер</label>
                     <InputText id="personnelNumber" value={user.personnelNumber}
                                onChange={(e) => onInputChange(e, 'personnelNumber')} required autoFocus/>
                     {submitted && !user.personnelNumber &&
-                    <small className="p-error">PersonnelNumber is required.</small>}
+                    <small className="p-error">Поле обязательное</small>}
                 </div>
                 {companies !== null && (
                     <div className="p-field">
-                        <label htmlFor="type">Company</label>
+                        <label htmlFor="type">Организация</label>
                         <Dropdown value={valueCompany} options={companies} onChange={onValueCompositionChange}
                                   optionLabel="name" placeholder="Select a value of companies"/>
-                        {/*{submitted && !object.type && <small className="p-error">type is required.</small>}*/}
                     </div>
                 )}
             </Dialog>
 
-            <Dialog visible={deleteUserDialog} style={{width: '450px'}} header="Confirm" modal
+            <Dialog visible={deleteUserDialog} style={{width: '450px'}} header="Подтвержение" modal
                     footer={deleteUserDialogFooter} onHide={hideDeleteUserDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>
-                    {user && <span>Are you sure you want to delete <b>{user.name}</b>?</span>}
+                    {user && <span>Удалить выбранного администратора<b>  {user.name}</b>?</span>}
                 </div>
             </Dialog>
 
-            <Dialog visible={deleteUsersDialog} style={{width: '450px'}} header="Confirm" modal
+            <Dialog visible={deleteUsersDialog} style={{width: '450px'}} header="Подтвержение" modal
                     footer={deleteUsersDialogFooter} onHide={hideDeleteUsersDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>
-                    {user && <span>Are you sure you want to delete the selected users?</span>}
+                    {user && <span>Удалить выбранных администраторов ?</span>}
                 </div>
             </Dialog>
         </div>
