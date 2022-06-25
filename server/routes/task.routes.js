@@ -7,9 +7,8 @@ const router = Router();
 router.post('/list', auth, async (req, res) => {
     try {
 
-        const typeOfElement = await TypeOfElement.find({})
+        const typeOfElement = await TypeOfElement.find({company:req.user.company},{Class:1})
         const tasks = await Tasks.find({})
-        const uniqType = await Tasks.find({}).distinct('typeComposition')
 
 
         const arr = await typeOfElement.map((item) => {
@@ -41,7 +40,7 @@ router.post('/create', auth, async (req, res) => {
     try {
 
 
-        const type = await TypeOfElement.findOne({Class: req.body.Class})
+        const type = await TypeOfElement.findOne({Class: req.body.Class,company:req.user.company})
         const candidate = await Tasks.find({typeComposition: type._id})
 
 

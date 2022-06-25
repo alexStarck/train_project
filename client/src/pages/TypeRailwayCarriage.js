@@ -8,19 +8,24 @@ import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
-import {Dropdown} from "primereact/dropdown";
 
 
 export const TypeRailwayCarriage = () => {
+
+
+    let emptyObject = {
+        Class: ''
+    };
+
     const {token} = useContext(AuthContext)
     const {request, loading} = useHttp()
     const [types, setTypes] = useState([])
     const [selectedTypes, setSelectedTypes] = useState([]);
-    const [typeDialog, setTypeDialog] = useState(false)
-    const [deleteObjectDialog, setDeleteObjectDialog] = useState(false);
-    const [deleteObjectsDialog, setDeleteObjectsDialog] = useState(false);
+    const [objectDialog, setObjectDialog] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
-
+    const [submitted, setSubmitted] = useState(false);
+    const [object, setObject] = useState(emptyObject);
+    const [deleteObjectsDialog, setDeleteObjectsDialog] = useState(false);
 
     const toast = useRef(null);
     const dt = useRef(null)
@@ -38,6 +43,47 @@ export const TypeRailwayCarriage = () => {
         }
     }, [request, token, types])
 
+
+    const createObject = useCallback(async () => {
+        try {
+            setSubmitted(true);
+
+            const fetched = await request('/api/typeOfElement', 'POST', {...object}, {
+                Authorization: `Bearer ${token}`
+            })
+            toast.current.show({severity: 'success', summary: 'Уведомление', detail: fetched.message, life: 3000});
+
+
+            setObjectDialog(false)
+            setObject(emptyObject)
+            getTypes()
+
+        } catch (e) {
+        }
+    }, [token, object])
+
+    const deleteObject = useCallback(async () => {
+        try {
+
+            setSubmitted(true);
+            const array = selectedTypes.map(item => item._id)
+            const fetched = await request(`/api/typeOfElement/`, 'DELETE', {array: array}, {
+                Authorization: `Bearer ${token}`
+            })
+
+            toast.current.show({severity: 'success', summary: 'Уведомление', detail: fetched.message, life: 3000});
+
+
+            setObjectDialog(false)
+            setObject(emptyObject)
+            setSelectedTypes([])
+            getTypes()
+
+        } catch (e) {
+        }
+    }, [token, selectedTypes])
+
+
     useEffect(() => {
         getTypes()
     }, [])
@@ -46,20 +92,29 @@ export const TypeRailwayCarriage = () => {
         return <Loader/>
     }
 
+
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _user = {...object};
+        _user[`${name}`] = val;
+        setObject(_user);
+    }
+
+
     const header = (
         <>
             <div className="PageName p-text-center ">
                 <h3>
-                    СТРАНИЦА вагонов
+                    СТРАНИЦА ТИПОВ ВАГОНОВ
                 </h3>
             </div>
             <div>
                 <div className='p-col-6'>
                     <React.Fragment>
                         <Button label="Создать" icon="pi pi-plus" className="p-button-success p-mr-2"
-                                onClick={() => console.log('create')}/>
+                                onClick={() => setObjectDialog(true)}/>
                         <Button label="Удалить" icon="pi pi-trash" className="p-button-danger p-mr-2"
-                                onClick={() => console.log('delete')}
+                                onClick={deleteObject}
                                 disabled={!selectedTypes || !selectedTypes.length}/>
                     </React.Fragment>
                 </div>
@@ -80,13 +135,39 @@ export const TypeRailwayCarriage = () => {
         </>
 
     );
+    const hideDialog = () => {
+        setObject(emptyObject)
+        setObjectDialog(false)
+    }
 
-    const objectEditDialogFooter = (
+    const hideDeleteObjectsDialog = () => {
+        setDeleteObjectsDialog(false);
+    }
+
+
+    const objectDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
-            <Button label="Save" icon="pi pi-check" className="p-button-text" onClick={createObject}/>
+            <Button label="Отмена" icon="pi pi-times" className="p-button-text" onClick={hideDialog}/>
+            <Button label="Создать" icon="pi pi-check" className="p-button-text" onClick={createObject}/>
         </React.Fragment>
     );
+
+    const deleteObjectsDialogFooter = (
+        <React.Fragment>
+            <Button label="Нет" icon="pi pi-times" className="p-button-text" onClick={hideDeleteObjectsDialog}/>
+            <Button label="Да" icon="pi pi-check" className="p-button-text" onClick={deleteObject}/>
+        </React.Fragment>
+    );
+
+
+    const ClassBodyTemplate = (rowData) => {
+        return (
+            <>
+                <span className="p-column-title">Тип Вагона</span>
+                {rowData.Class}
+            </>
+        );
+    }
 
 
     return (
@@ -103,114 +184,35 @@ export const TypeRailwayCarriage = () => {
                                dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                className="datatable-responsive"
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                               currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} Поездов"
+                               currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} Типов Вагонов"
                                globalFilter={globalFilter}
                                loading={loading}
                                header={header}>
                         <Column selectionMode="multiple" headerStyle={{width: '3rem'}}/>
-                        {/*<Column field="Class" header="Тип Вагона" body={ObjectNameBodyTemplate} sortable/>*/}
+                        <Column field="Class" header="Тип Вагона" body={ClassBodyTemplate} sortable/>
                     </DataTable>
+
+                    <Dialog visible={objectDialog} style={{width: '650px'}} header="Создание поезда" modal
+                            className="p-fluid" footer={objectDialogFooter} onHide={hideDialog} position='top'>
+                        <div className="p-field">
+                            <label htmlFor="Class">Тип вагона</label>
+                            <InputText id="Class" value={object.Class}
+                                       onChange={(e) => onInputChange(e, 'Class')} required autoFocus keyfilter={/[0-9a-zA-Zа-яА-Я]/} minLength="2"  maxLength="7"/>
+                            {submitted && !object.Class &&
+                            <small className="p-error">Тип вагона обязателен</small>}
+                        </div>
+                    </Dialog>
+
+                    <Dialog visible={deleteObjectsDialog} style={{width: '450px'}} header="Подтверждение" modal
+                            footer={deleteObjectsDialogFooter} onHide={hideDeleteObjectsDialog} position='top'>
+                        <div className="confirmation-content">
+                            <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>
+                            {object && <span>Вы точно хотите удалить выбранные тип вагонов  ?</span>}
+                        </div>
+                    </Dialog>
+
                 </div>
 
-                <Dialog visible={typeDialog} style={{width: '650px'}} header="Создание вагона" modal
-                        className="p-fluid" footer={objectEditDialogFooter} onHide={hideDialog} position='top'>
-
-                    <div className="p-field">
-                        <label htmlFor="objectName">Номер</label>
-                        <InputText id="objectName" value={object.objectName}
-                                   onChange={(e) => onInputChange(e, 'objectName')} required autoFocus/>
-                        {submitted && !object.objectName && <small className="p-error">objectName is required.</small>}
-                    </div>
-
-                    <div className="p-field">
-                        <label htmlFor="type">Тип</label>
-                        <InputText id="type" value={object.type} onChange={(e) => onInputChange(e, 'type')} required
-                                   autoFocus/>
-                        {submitted && !object.type && <small className="p-error">type is required.</small>}
-                    </div>
-                    <div className="p-field" style={{height: height}}>
-                        <label htmlFor="type">Состав</label>
-                        <Dropdown value={valueComposition} options={valuesCom} onChange={onValueCompositionChange}
-                                  optionLabel="name" placeholder="Select a value of composition"/>
-                    </div>
-                    {composition !== null && (composition.map((item, index) => {
-                            return (
-                                <div className="p-mb-2 p-d-flex " key={index}>
-                                    <InputText className="p-mr-2 p-d-inline-flex" value={item.number} disabled/>
-                                    <Dropdown className="p-d-inline-flex" value={item.class} options={classList}
-                                              onChange={(e) => onCompositionChange(e, item.number)}
-                                              placeholder="тип вагона" minLength={2} maxLength={2} editable required/>
-                                    {submitted && !item.class && <small className="p-error">class is required.</small>}
-                                </div>
-                            )
-                        })
-                    )}
-                    <div className="p-field">
-                        <label htmlFor="detail">Детали</label>
-                        <InputText id="detail" value={object.detail} onChange={(e) => onInputChange(e, 'detail')}
-                                   required autoFocus/>
-                        {submitted && !object.detail && <small className="p-error">detail is required.</small>}
-                    </div>
-                </Dialog>
-
-                {/*<Dialog visible={objectDialog} style={{width: '650px'}} header="Создание поезда" modal*/}
-                {/*        className="p-fluid" footer={objectDialogFooter} onHide={hideDialog} position='top'>*/}
-                {/*    <div className="p-field">*/}
-                {/*        <label htmlFor="objectName">Номер</label>*/}
-                {/*        <InputText id="objectName" value={object.objectName}*/}
-                {/*                   onChange={(e) => onInputChange(e, 'objectName')} required autoFocus/>*/}
-                {/*        {submitted && !object.objectName && <small className="p-error">objectName is required.</small>}*/}
-                {/*    </div>*/}
-
-                {/*    <div className="p-field">*/}
-                {/*        <label htmlFor="type">Тип</label>*/}
-                {/*        <InputText id="type" value={object.type} onChange={(e) => onInputChange(e, 'type')} required*/}
-                {/*                   autoFocus/>*/}
-                {/*        {submitted && !object.type && <small className="p-error">type is required.</small>}*/}
-                {/*    </div>*/}
-
-                {/*    <div className="p-field" style={{height: height}}>*/}
-                {/*        <label htmlFor="type">Состав</label>*/}
-                {/*        <Dropdown value={valueComposition} options={valuesCom} onChange={onValueCompositionChange}*/}
-                {/*                  optionLabel="name" placeholder="Select a value of composition"/>*/}
-                {/*        {submitted && !object.type && <small className="p-error">type is required.</small>}*/}
-                {/*    </div>*/}
-                {/*    {composition !== null && (composition.map((item, index) => {*/}
-                {/*            return (*/}
-                {/*                <div className="p-mb-2 p-d-flex " key={index}>*/}
-                {/*                    <InputText className="p-mr-2 p-d-inline-flex" value={item.number} disabled/>*/}
-                {/*                    <InputText className="p-d-inline-flex" value={item.class}*/}
-                {/*                               keyfilter={/^[0-9а-яА-Я]+$/}*/}
-                {/*                               onChange={(e) => onCompositionChange(e, item.number)}*/}
-                {/*                               placeholder="тип вагона" minLength={2} maxLength={2} required/>*/}
-                {/*                </div>*/}
-                {/*            )*/}
-                {/*        })*/}
-                {/*    )}*/}
-                {/*    <div className="p-field">*/}
-                {/*        <label htmlFor="detail">Детали</label>*/}
-                {/*        <InputText id="detail" value={object.detail} onChange={(e) => onInputChange(e, 'detail')}*/}
-                {/*                   required autoFocus/>*/}
-                {/*        {submitted && !object.detail && <small className="p-error">detail is required.</small>}*/}
-                {/*    </div>*/}
-
-                {/*</Dialog>*/}
-
-                {/*<Dialog visible={deleteObjectDialog} style={{width: '450px'}} header="Подтверждение" modal*/}
-                {/*        footer={deleteObjectDialogFooter} onHide={hideDeleteObjectDialog} position='top'>*/}
-                {/*    <div className="confirmation-content">*/}
-                {/*        <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>*/}
-                {/*        {object && <span>Вы точно хотите удалить  <b>{object.name}</b>?</span>}*/}
-                {/*    </div>*/}
-                {/*</Dialog>*/}
-
-                {/*<Dialog visible={deleteObjectsDialog} style={{width: '450px'}} header="Подтверждение" modal*/}
-                {/*        footer={deleteObjectsDialogFooter} onHide={hideDeleteObjectsDialog} position='top'>*/}
-                {/*    <div className="confirmation-content">*/}
-                {/*        <i className="pi pi-exclamation-triangle p-mr-3" style={{fontSize: '2rem'}}/>*/}
-                {/*        {object && <span>Вы точно хотите удалить выбранные поезда ?</span>}*/}
-                {/*    </div>*/}
-                {/*</Dialog>*/}
             </div>
         </div>
     )

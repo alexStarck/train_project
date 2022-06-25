@@ -338,7 +338,7 @@ export const TasksPage = () => {
                 }}
                            dataKey="_id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                           currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} типов вагонов"
+                           currentPageReportTemplate="Показано с {first} по {last} из {totalRecords} задач"
                            globalFilter={globalFilter}
                            loading={loading}
                            header={header}>

@@ -24,6 +24,7 @@ export const TrainPage = () => {
     const [composition, setComposition] = useState(null)
     const [valueComposition, setValueComposition] = useState(null)
     const [height, setHeight] = useState('250px')
+    const [types, setTypes] = useState(null);
     const [objectsList, setObjectsList] = useState(null);
     const [classList, setClassList] = useState(null);
     const [objectDialog, setObjectDialog] = useState(false);
@@ -51,6 +52,18 @@ export const TrainPage = () => {
         } catch (e) {
         }
     }, [token, request, objectsList])
+    const getTypes = useCallback(async () => {
+        try {
+            const fetched = await request('/api/typeOfElement', 'GET', null, {
+                Authorization: `Bearer ${token}`
+            })
+
+            setTypes(fetched.map(item => item.Class))
+
+        } catch (e) {
+
+        }
+    }, [request, token, types])
     const fetchClasses = useCallback(async () => {
         try {
             const fetched = await request('/api/typeOfElement', 'GET', null, {
@@ -65,6 +78,7 @@ export const TrainPage = () => {
     useEffect(() => {
         fetchObjects()
         fetchClasses()
+        getTypes()
     }, []);
 
 
@@ -351,43 +365,22 @@ export const TrainPage = () => {
 
     const onCompositionChange = (e, name) => {
 
-        switch (e.target.value.length) {
-            case 0:
-                Save()
-                break;
-            case 1:
-                if (e.target.value.match(/^[0-9а-яА-Я]+$/) !== null) {
-                    Save()
-                } else {
-                    e.target.value = ''
-                }
-                break;
-            case 2:
-                if (e.target.value.match(/^[0-9а-яА-Я]+$/) !== null) {
-                    Save()
-                } else {
-                    e.target.value = composition[Number(name) - 1].class
-                }
-                break;
-        }
 
-        function Save() {
-            setComposition(composition.map(function (obj) {
+        setComposition(composition.map(function (obj) {
 
-                if (obj.number === name)
-                    return {...obj, class: e.target.value}
+            if (obj.number === name)
+                return {...obj, class: e.target.value}
 
-                return obj
-            }))
+            return obj
+        }))
 
-            setLocalComposition(composition.map(function (obj) {
+        setLocalComposition(composition.map(function (obj) {
 
-                if (obj.number === name)
-                    return {...obj, class: e.target.value}
+            if (obj.number === name)
+                return {...obj, class: e.target.value}
 
-                return obj
-            }))
-        }
+            return obj
+        }))
 
 
     }
@@ -548,9 +541,9 @@ export const TrainPage = () => {
                             return (
                                 <div className="p-mb-2 p-d-flex " key={index}>
                                     <InputText className="p-mr-2 p-d-inline-flex" value={item.number} disabled/>
-                                    <Dropdown className="p-d-inline-flex" value={item.class} options={classList}
+                                    <Dropdown className="p-d-inline-flex" value={item.class} options={types}
                                               onChange={(e) => onCompositionChange(e, item.number)}
-                                              placeholder="тип вагона" minLength={2} maxLength={2} editable required/>
+                                              placeholder="тип вагона" minLength={2} maxLength={2} required/>
                                     {submitted && !item.class && <small className="p-error">class is required.</small>}
                                 </div>
                             )
@@ -590,10 +583,13 @@ export const TrainPage = () => {
                             return (
                                 <div className="p-mb-2 p-d-flex " key={index}>
                                     <InputText className="p-mr-2 p-d-inline-flex" value={item.number} disabled/>
-                                    <InputText className="p-d-inline-flex" value={item.class}
-                                               keyfilter={/^[0-9а-яА-Я]+$/}
-                                               onChange={(e) => onCompositionChange(e, item.number)}
-                                               placeholder="тип вагона" minLength={2} maxLength={2} required/>
+                                    <Dropdown className="p-d-inline-flex" value={item.class} options={types}
+                                              onChange={(e) => onCompositionChange(e, item.number)}
+                                              placeholder="тип вагона" required/>
+                                    {/*<InputText className="p-d-inline-flex" value={item.class}*/}
+                                    {/*           keyfilter={/^[0-9а-яА-Я]+$/}*/}
+                                    {/*           onChange={(e) => onCompositionChange(e, item.number)}*/}
+                                    {/*           placeholder="тип вагона" minLength={2} maxLength={2} required/>*/}
                                 </div>
                             )
                         })

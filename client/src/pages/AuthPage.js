@@ -82,12 +82,7 @@ export const AuthPage = () => {
                                         <label htmlFor="in">пароль</label>
                                     </span>
                       </div>
-                      <div className='p-col-6'>
-                          <button className='forget-btn' >
-                              Забыли пароль ?
-                          </button>
-                      </div>
-                      <div className='p-col-6' style={{textAlign: "right"}}>
+                      <div className='p-col-12' style={{textAlign: "left"}}>
                           <Button
                               label="войти "
                               className="p-field"
