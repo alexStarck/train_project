@@ -20,4 +20,6 @@ RUN npm install
 
 USER node
 
-CMD ["npm","run","start"]
+EXPOSE 5000
+
+CMD ["npm","start"]

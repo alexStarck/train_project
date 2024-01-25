@@ -7,6 +7,8 @@ services:
     read_only: true
     container_name: api
     restart: always
+    ports:
+      - '5000:5000'
     environment:
       - MONGOURI=mongodb://mongodb:27017/RJD
       - DefaultPass=x+Ku1?n.ypg8BCGjWb>f
@@ -15,6 +17,37 @@ services:
       - mongodb
     networks:
       - node-network
+
+  adminka:
+    build: ./adminka
+    image: react-adminka
+    read_only: false
+    container_name: react-adminka
+    restart: "no"
+    stdin_open: true
+    tty: true
+    ports:
+      - '8080:8080'
+    depends_on:
+      - api
+    networks:
+      - node-network
+
+  client:
+    build: ./client
+    image: react-client
+    read_only: false
+    container_name: react-client
+    restart: "no"
+    stdin_open: true
+    tty: true
+    ports:
+      - '5000:5000'
+    depends_on:
+      - api
+    networks:
+      - node-network
+
 
   mongodb:
     image: mongo:latest
