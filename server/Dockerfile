@@ -23,6 +23,6 @@ RUN npm install
 
 USER node
 
-ENV MONGOURI="mongodb://127.0.0.1:2717/RJD" DefaultPass="x+Ku1?n.ypg8BCGjWb>f" JWTSECRET="yzwDw_fi+Y@wc7,^=eb1?.rkVUU>.n"
+ENV MONGOURI="mongodb://localhost:2717/RJD" DefaultPass="x+Ku1?n.ypg8BCGjWb>f" JWTSECRET="yzwDw_fi+Y@wc7,^=eb1?.rkVUU>.n"
 
 CMD ["node","app.js"]
