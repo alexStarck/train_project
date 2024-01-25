@@ -7,8 +7,9 @@ ARG DEP=""
 RUN apk update && \
     apk upgrade && \
     apk add curl && \
-    apk add --no-cache python3 ${DEP} && \
-    rm -rf /var/cache/apk/*
+    apk add python3
+#    apk add --no-cache python3 ${DEP} && \
+#    rm -rf /var/cache/apk/*
 
 
 COPY ./fonts /app/fonts
