@@ -4,8 +4,7 @@ WORKDIR /app
 
 ARG DEP=""
 
-#RUN apk update
-#RUN apk upgrade
+RUN apk update && apk --no-cache upgrade
 RUN apk add curl
 RUN apk add python3
 
