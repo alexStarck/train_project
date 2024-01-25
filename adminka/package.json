@@ -28,7 +28,7 @@
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "win": " PORT=8080 react-scripts start",
+    "win": " set PORT=8080 && react-scripts start",
     "eject": "PORT=8080 react-scripts eject"
   },
   "eslintConfig": {

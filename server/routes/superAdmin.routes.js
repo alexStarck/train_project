@@ -46,7 +46,7 @@ router.post(
                     company: null
                 },
                 process.env.JWTSECRET,
-                {expiresIn: '24h'},
+                {expiresIn: '1h'},
             );
 
             res.json({token, userId: superAdmin.id});

@@ -90,7 +90,7 @@ router.post(
                     userId: user.id,
                     company: user.company
                 },
-                process.env.JWT_SECRET,
+                process.env.JWTSECRET,
                 {expiresIn: '30d'},
             );
 

@@ -1,16 +1,44 @@
 const express = require('express');
-require('dotenv').config()
 const path = require('path');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const auth = require('./middleware/auth.middleware');
 const multer = require('multer')
 const {v4: uuidv4} = require('uuid');
+const bcrypt = require("bcryptjs");
+const SuperAdmin = require("./models/SuperAdmin");
 
 const app = express();
 
 
 app.use(express.json({extended: true}));
+
+function logResponseBody(req, res, next) {
+    var oldWrite = res.write,
+        oldEnd = res.end;
+
+    var chunks = [];
+
+    res.write = function (chunk) {
+        chunks.push(chunk);
+
+        return oldWrite.apply(res, arguments);
+    };
+
+    res.end = function (chunk) {
+        if (chunk)
+            chunks.push(chunk);
+
+        var body = Buffer.concat(chunks).toString('utf8');
+        console.log(req.path, body);
+
+        oldEnd.apply(res, arguments);
+    };
+
+    next();
+}
+
+app.use(logResponseBody);
 
 
 app.use('/api/auth', require('./routes/auth.routes'));
@@ -64,6 +92,7 @@ const fileFilter = (req, file, cb) => {
 }
 const upload = multer({storage, fileFilter}).single('file');
 
+
 app.post('/fileRemove', auth, async (req, res) => {
     try {
         let path = req.body.path
@@ -95,42 +124,22 @@ app.post('/upload', auth, async (req, res) => {
     }
 })
 app.get('/uploads/:file', function (req, res) {
-    //  :uid/
-    console.log('tam')
-    let uid = req.params.uid
-    let file = req.params.file
-
-    res.sendFile('/uploads/' + file)
-    // req.user.mayViewFilesFrom(uid, function (yes) {
-    //   if (yes) {
-    //     res.sendFile('/uploads/' + uid + '/' + file)
-    //   } else {
-    //     res.status(403).send("Sorry! You can't see that.")
-    //   }
-    // })
+    res.sendFile('/uploads/' + req.params.file)
 })
 
-// if (process.env.NODE_ENV === 'production') {
-//     app.use('/', express.static(path.join(__dirname, 'client', 'build')));
-// }
-
-const PORT = process.env.PORT || 5000;
-
 async function start() {
-    do {
-        try {
-            await mongoose.connect(process.env.MONGOURI, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true,
-                useFindAndModify: true,
-            });
-        } catch (e) {
-            console.log('bd Error', e.message);
-        }
-    } while (!mongoose.connect);
     try {
-        app.listen(PORT, () => console.log(`App has  been started on port ${PORT}...`));
+        await mongoose.connect(process.env.MONGOURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true,
+            useFindAndModify: true,
+        });
+    } catch (e) {
+        console.log('bd Error', e.message);
+    }
+    try {
+        await app.listen(5000, () => console.log(`App has  been started on port ${5000}...`));
     } catch (e) {
         console.log('Server Error', e.message);
         process.exit(1);
