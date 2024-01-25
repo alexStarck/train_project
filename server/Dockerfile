@@ -4,10 +4,11 @@ WORKDIR /app
 
 ARG DEP=""
 
-RUN apk update && \
-    apk upgrade && \
-    apk add curl && \
-    apk add python3
+RUN apk update
+RUN apk upgrade
+RUN apk add curl
+RUN apk add python3
+
 #    apk add --no-cache python3 ${DEP} && \
 #    rm -rf /var/cache/apk/*
 
