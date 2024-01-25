@@ -17,6 +17,7 @@ services:
       - mongodb
     networks:
       - node-network
+      - host
 
   adminka:
     build: ./adminka
