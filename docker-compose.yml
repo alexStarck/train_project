@@ -7,6 +7,8 @@ services:
     read_only: true
     container_name: api
     restart: always
+    dns:
+      - 1.1.1.1
     ports:
       - '5000:5000'
     environment:
@@ -59,6 +61,3 @@ services:
 networks:
   node-network:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.99.0/24
