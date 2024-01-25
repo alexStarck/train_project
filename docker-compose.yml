@@ -1,0 +1,28 @@
+version: "3.7"
+
+services:
+  api:
+    build: ./server
+    image: node-app
+    read_only: true
+    container_name: api
+    restart: always
+    environment:
+      - MONGOURI=mongodb://mongodb:27017/RJD
+      - DefaultPass=x+Ku1?n.ypg8BCGjWb>f
+      - JWTSECRET=yzwDw_fi+Y@wc7,^=eb1?.rkVUU>.n
+    depends_on:
+      - mongodb
+    networks:
+      - node-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - node-network
+
+networks:
+  node-network:
+    driver: bridge
