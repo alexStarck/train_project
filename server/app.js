@@ -80,19 +80,30 @@ app.post('/fileRemove', auth, async (req, res) => {
 })
 app.post('/upload', auth, async (req, res) => {
     try {
-        await upload(req, res, err => {
+        // await upload(req, res, err => {
+        //
+        //     if (err) {
+        //         console.log(err)
+        //         res.status(500)
+        //     }
+        console.log(Object.keys(res))
+        console.log(Object.keys(req))
+        //
+        //     res.json({
+        //         path: res.req.file.destination + '/' + res.req.file.filename
+        //     })
+        // })
+        let filedata = req.file;
 
-            if (err) {
-                console.log(err)
-                res.status(500)
-            }
-            console.log(req)
-            console.log(res.req)
+        console.log(filedata);
+        if (!filedata) {
+            res.json({message: "Ошибка при загрузке файла"});
+        } else {
+                res.json({
+                    path: req.file.destination + '/' + req.file.filename
+                })
+        }
 
-            res.json({
-                path: res.req.file.destination + '/' + res.req.file.filename
-            })
-        })
     } catch (e) {
         res.status(500).json({message: 'ошибка'})
     }

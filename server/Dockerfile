@@ -12,12 +12,13 @@ COPY ./middleware /app/middleware
 COPY ./models /app/models
 COPY ./routes /app/routes
 COPY ./app.js /app
+COPY ./uploads /app/uploads
 COPY ./package.json /app
 
 RUN npm install -g rimraf node-gyp
 
 RUN npm install
 
-USER node
+#USER node
 
 CMD ["node","app.js"]
