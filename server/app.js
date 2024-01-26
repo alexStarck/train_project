@@ -85,9 +85,10 @@ app.post('/upload', auth, async (req, res) => {
     try {
         const filedata = req.file;
 
-        upload(req, res, (err) => {
+        await upload(req, res, (err) => {
 
             if (err) {
+                console.log(err)
                 res.json({message: "Ошибка при загрузке файла"});
                 return;
             }
