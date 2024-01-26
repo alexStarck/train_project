@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const Company = require('../models/Company')
 const User = require('../models/User');
 const auth = require('../middleware/auth.middleware');
-const Report = require("../models/Report");
 
 
 const router = Router();
@@ -106,9 +105,7 @@ router.post(
 router.post('/list', auth, async (req, res) => {
     try {
         const users = await User.find({company: req.user.company}, {password: 0})
-        const ids = users.map(item => item.reports).flat()
-        const reports = await Report.find({_id: {$in: ids}})
-        res.json(reports)
+        res.json(users)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});
     }
@@ -116,18 +113,13 @@ router.post('/list', auth, async (req, res) => {
 
 router.post('/', auth, async (req, res) => {
     try {
-        console.log('tuttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt')
         const users = await User.find({},{password:0}).populate('company')
-        console.log('users')
-        console.log(users)
         let arr = users.map((user) => {
             const obj = JSON.parse(JSON.stringify(user))
             obj.companyName = user.company.name
             delete obj.company
             return obj
         })
-        console.log('! users')
-        console.log(arr)
         res.json(arr)
     } catch (e) {
         res.status(500).json({message: 'Что-то пошло не так сссссс, попробуйте снова'});

@@ -11,15 +11,10 @@ const {v4: uuidv4} = require('uuid');
 
 router.post('/list', auth, async (req, res) => {
     try {
-
-
-        const reportsCompany = await Report.find({company: req.user.company})
-
-        let reports = []
-        console.log(reportsCompany)
-
-
-        res.json(reports);
+        const users = await User.find({company: req.user.company}, {password: 0})
+        const ids = users.map(item => item.reports).flat()
+        const reports = await Report.find({_id: {$in: ids}})
+        res.json(reports)
     } catch (e) {
 
         res.status(500).json({message: 'ошибка запроса списка отчетов'});
