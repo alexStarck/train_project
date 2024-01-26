@@ -37,6 +37,7 @@ router.post('/list', auth, async (req, res) => {
 
         for (const report of reports) {
             const obj = JSON.parse(JSON.stringify(report))
+            console.log(obj)
             const owner = users.find(item => item.reports.includes(report._id))
             obj.owner = {name: owner.name, surname: owner.surname}
             obj.timeOut = generateTime(new Date(report.dateOut).getTime())
