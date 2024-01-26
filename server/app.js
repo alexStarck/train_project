@@ -81,18 +81,22 @@ app.post('/fileRemove', auth, async (req, res) => {
     }
 })
 
-app.post('/upload', auth, upload, async (req, res) => {
+app.post('/upload', auth, async (req, res) => {
     try {
         const filedata = req.file;
 
-        console.log(filedata);
-        if (!filedata) {
-            res.json({message: "Ошибка при загрузке файла"});
-        } else {
-                res.json({
-                    path: filedata.path
-                })
-        }
+        upload(req, res, (err) => {
+
+            if (err) {
+                res.json({message: "Ошибка при загрузке файла"});
+                return;
+            }
+
+            res.json({
+                path: filedata.path
+            })
+
+        });
 
     } catch (e) {
         res.status(500).json({message: 'ошибка'})
