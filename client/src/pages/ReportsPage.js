@@ -53,7 +53,7 @@ export const ReportsPage = () => {
     const GetImage=async (url,test)=>{
         console.log(url)
 
-        const response =await fetch(url, {
+        const response =await request(url, {
             headers:{
                 Authorization: `Bearer ${token}`
             }
