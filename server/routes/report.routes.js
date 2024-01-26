@@ -37,18 +37,21 @@ router.post('/list', auth, async (req, res) => {
 
         for (const report of reports) {
             const obj = JSON.parse(JSON.stringify(report))
-            console.log(obj)
             const owner = users.find(item => item.reports.includes(report._id))
             obj.owner = {name: owner.name, surname: owner.surname}
-            obj.timeOut = generateTime(new Date(report.dateOut).getTime())
-            obj.dateOut = generateDate(new Date(report.dateOut).getTime())
+            if (Object.keys().includes('dateOut')) {
+                obj.timeOut = generateTime(new Date(report.dateOut).getTime())
+                obj.dateOut = generateDate(new Date(report.dateOut).getTime())
+            } else {
+                obj.timeOut = ''
+                obj.dateOut = ''
+            }
             obj.timeIn = generateTime(new Date(report.dateIn).getTime())
             obj.dateIn = generateDate(new Date(report.dateIn).getTime())
             result.push(obj)
         }
         res.json(result)
     } catch (e) {
-        console.log(e)
         res.status(500).json({message: 'ошибка запроса списка отчетов'});
     }
 });
