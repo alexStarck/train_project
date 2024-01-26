@@ -8,22 +8,6 @@ const {v4: uuidv4} = require('uuid');
 
 const app = express();
 
-
-app.use(express.json({extended: true}));
-
-
-
-app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/user', require('./routes/user.routes'));
-app.use('/api/task', require('./routes/task.routes'));
-app.use('/api/admin', require('./routes/admin.routes'));
-app.use('/api/company', require('./routes/company.routes'));
-app.use('/api/superAdmin', require('./routes/superAdmin.routes'));
-app.use('/api/objects', require('./routes/objects.routes'));
-app.use('/api/report', require('./routes/report.routes'));
-app.use('/api/typeOfElement', require('./routes/typeOfElement.routes'));
-app.use('/uploads', auth, express.static(path.join(__dirname, '/uploads')));
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         function formattedDate() {
@@ -65,6 +49,24 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({storage, fileFilter}).single('file');
 
 
+app.use(express.json({extended: true}));
+// app.use(multer({storage:storage, fileFilter: fileFilter}).single("file"));
+
+
+app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/user', require('./routes/user.routes'));
+app.use('/api/task', require('./routes/task.routes'));
+app.use('/api/admin', require('./routes/admin.routes'));
+app.use('/api/company', require('./routes/company.routes'));
+app.use('/api/superAdmin', require('./routes/superAdmin.routes'));
+app.use('/api/objects', require('./routes/objects.routes'));
+app.use('/api/report', require('./routes/report.routes'));
+app.use('/api/typeOfElement', require('./routes/typeOfElement.routes'));
+app.use('/uploads', auth, express.static(path.join(__dirname, '/uploads')));
+
+
+
+
 app.post('/fileRemove', auth, async (req, res) => {
     try {
         let path = req.body.path
@@ -78,21 +80,11 @@ app.post('/fileRemove', auth, async (req, res) => {
         res.status(500).json({message: 'ошибка'})
     }
 })
-app.post('/upload', auth, async (req, res) => {
+
+app.post('/upload', auth, upload, async (req, res) => {
     try {
-        // await upload(req, res, err => {
-        //
-        //     if (err) {
-        //         console.log(err)
-        //         res.status(500)
-        //     }
         console.log(Object.keys(res))
         console.log(Object.keys(req))
-        //
-        //     res.json({
-        //         path: res.req.file.destination + '/' + res.req.file.filename
-        //     })
-        // })
         let filedata = req.file;
 
         console.log(filedata);
