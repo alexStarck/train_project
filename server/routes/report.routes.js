@@ -13,10 +13,10 @@ router.post('/list', auth, async (req, res) => {
     try {
 
 
-        const users = await Report.find({company: req.user.company})
+        const reportsCompany = await Report.find({company: req.user.company})
 
         let reports = []
-
+        console.log(reportsCompany)
 
 
         res.json(reports);
