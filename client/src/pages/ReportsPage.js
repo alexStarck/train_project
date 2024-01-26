@@ -51,14 +51,12 @@ export const ReportsPage = () => {
 
 
     const GetImage=async (url,test)=>{
-        console.log(url)
 
-        const response =await request(url, {
-            headers:{
+        const response = await fetch('http://195.161.68.151:5000/' + url, {
+            headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log(response)
         let blob= await response.blob()
         if(test){
             window.open(window.URL.createObjectURL(blob))
