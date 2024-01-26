@@ -129,6 +129,7 @@ router.post('/create', auth, async (req, res) => {
         }
 
     } catch (e) {
+        console.log('ошибка pdf create', e)
         res.status(500).json({message: 'ошибка создания отчета '});
     }
 });
@@ -641,6 +642,7 @@ router.post('/update', auth, async (req, res) => {
         }
         //res.status(200).json({ message: ' отчет обновлен' })
     } catch (e) {
+        console.log('ошибка создание отчета pdf ', e)
         res.status(500).json({message: 'ошибка обновления отчета '});
     }
 });
@@ -649,7 +651,7 @@ router.post('/done', auth, async (req, res) => {
 
 
     } catch (e) {
-        res.status(500).json({message: 'Error  Train post '});
+        res.status(500).json({message: 'Error Train post '});
     }
 });
 router.post('/info', auth, async (req, res) => {
