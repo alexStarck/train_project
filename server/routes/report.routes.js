@@ -39,7 +39,7 @@ router.post('/list', auth, async (req, res) => {
             const obj = JSON.parse(JSON.stringify(report))
             const owner = users.find(item => item.reports.includes(report._id))
             obj.owner = {name: owner.name, surname: owner.surname}
-            if (Object.keys().includes('dateOut')) {
+            if (Object.keys(report).includes('dateOut')) {
                 obj.timeOut = generateTime(new Date(report.dateOut).getTime())
                 obj.dateOut = generateDate(new Date(report.dateOut).getTime())
             } else {
