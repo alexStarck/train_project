@@ -18,7 +18,7 @@ services:
     depends_on:
       - mongodb
     volumes:
-      - ./uploads:/app/uploads
+      - /opt/uploads:/app/uploads
     networks:
       - node-network
 
@@ -57,7 +57,7 @@ services:
     container_name: mongodb
     image: mongo:latest
     volumes:
-      - ./data:/data/db
+      - /opt/data:/data/db
     ports:
       - '27017:27017'
     networks:
