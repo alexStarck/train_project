@@ -11,32 +11,6 @@ const app = express();
 
 app.use(express.json({extended: true}));
 
-// function logResponseBody(req, res, next) {
-//     var oldWrite = res.write,
-//         oldEnd = res.end;
-//
-//     var chunks = [];
-//
-//     res.write = function (chunk) {
-//         chunks.push(chunk);
-//
-//         return oldWrite.apply(res, arguments);
-//     };
-//
-//     res.end = function (chunk) {
-//         if (chunk)
-//             chunks.push(chunk);
-//
-//         var body = Buffer.concat(chunks).toString('utf8');
-//         console.log(req.path, body);
-//
-//         oldEnd.apply(res, arguments);
-//     };
-//
-//     next();
-// }
-//
-// app.use(logResponseBody);
 
 
 app.use('/api/auth', require('./routes/auth.routes'));
@@ -70,7 +44,7 @@ const storage = multer.diskStorage({
                 fs.mkdirSync(dir, {recursive: true})
             }
         } catch (err) {
-
+            console.log('error upload', err)
         }
         cb(null, dir);
     },
@@ -112,6 +86,8 @@ app.post('/upload', auth, async (req, res) => {
                 console.log(err)
                 res.status(500)
             }
+            console.log(req)
+            console.log(res.req)
 
             res.json({
                 path: res.req.file.destination + '/' + res.req.file.filename

@@ -4,7 +4,7 @@ services:
   api:
     build: ./server
     image: node-app
-    read_only: true
+    read_only: false
     container_name: api
     restart: unless-stopped
     dns:
@@ -52,7 +52,10 @@ services:
 
 
   mongodb:
+    container_name: mongodb
     image: mongo:latest
+    volumes:
+      - ./data:/data/db
     ports:
       - '27017:27017'
     networks:
