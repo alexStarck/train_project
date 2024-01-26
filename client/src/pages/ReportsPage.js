@@ -1,33 +1,29 @@
-import React, {useCallback, useContext, useEffect, useState,useRef} from 'react'
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
 import {useHttp} from '../hooks/http.hook'
 import {AuthContext} from '../context/AuthContext'
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Toast } from 'primereact/toast';
-import { Button } from 'primereact/button';
-import { InputText } from 'primereact/inputtext';
-import {Dialog} from "primereact/dialog";
-
-
+import {DataTable} from 'primereact/datatable';
+import {Column} from 'primereact/column';
+import {Toast} from 'primereact/toast';
+import {InputText} from 'primereact/inputtext';
 
 
 export const ReportsPage = () => {
-    const emptyReport={
-        objectName:'',
-        data:[],
-        dateIn:'',
-        dateOut:'',
-        gps:''
+    const emptyReport = {
+        objectName: '',
+        data: [],
+        dateIn: '',
+        dateOut: '',
+        gps: ''
     }
-    const { request,loading} = useHttp()
+    const {request, loading} = useHttp()
     const {token} = useContext(AuthContext)
     const [reportsList, setReportsList] = useState(null);
 
     const [selectedUsers, setSelectedUsers] = useState([]);
 
     const [globalFilter, setGlobalFilter] = useState(null);
-    const [reportDialog,setReportDialog] = useState(false)
-    const [report,setReport] = useState(emptyReport)
+    const [reportDialog, setReportDialog] = useState(false)
+    const [report, setReport] = useState(emptyReport)
     const toast = useRef(null);
     const dt = useRef(null)
 
@@ -55,23 +51,22 @@ export const ReportsPage = () => {
 
 
     const GetImage=async (url,test)=>{
+        console.log(url)
 
         const response =await fetch(url, {
-            // method: 'GET',
             headers:{
                 Authorization: `Bearer ${token}`
             }
         })
+        console.log(response)
         let blob= await response.blob()
         if(test){
             window.open(window.URL.createObjectURL(blob))
         }else{
-            // window.open('https://www.google.com');
             let win = window.open(window.URL.createObjectURL(blob));
             if (win == null || typeof(win)=='undefined'){
                 toast.current.show({ severity: 'error', summary: 'Уведомление', detail: 'у вас выключена блокировка всплывающих окон ', life: 3000 });
             }
-            // win.focus();
         }
 
             // .then((response) => response.blob())
