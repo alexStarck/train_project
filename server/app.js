@@ -83,7 +83,7 @@ app.post('/fileRemove', auth, async (req, res) => {
 
 app.post('/upload', auth, async (req, res) => {
     try {
-        const filedata = req.file;
+
 
         await upload(req, res, (err) => {
 
@@ -93,6 +93,7 @@ app.post('/upload', auth, async (req, res) => {
                 return;
             }
 
+            const filedata = req.file;
             res.json({
                 path: filedata.path
             })
