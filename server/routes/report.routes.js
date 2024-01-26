@@ -14,7 +14,38 @@ router.post('/list', auth, async (req, res) => {
         const users = await User.find({company: req.user.company}, {password: 0})
         const ids = users.map(item => item.reports).flat()
         const reports = await Report.find({_id: {$in: ids}})
-        res.json(reports)
+        const result = []
+        function generateDate(timestamp) {
+            const year = new Intl.DateTimeFormat('ru', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+            }).format(timestamp);
+
+            return year
+        }
+        function generateTime(timestamp) {
+            const hour = new Intl.DateTimeFormat('ru', {
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: false,
+                second:'numeric',
+            }).format(timestamp);
+
+            return hour
+        }
+
+        for (const report of reports) {
+            const obj = JSON.parse(JSON.stringify(report))
+            const owner = users.find(item => item.reports.includes(report._id))
+            obj.owner = {name: owner.name, surname: owner.surname}
+            obj.timeOut = generateTime(new Date(report.dateOut).getTime())
+            obj.dateOut = generateDate(new Date(report.dateOut).getTime())
+            obj.timeIn = generateTime(new Date(report.dateIn).getTime())
+            obj.dateIn = generateDate(new Date(report.dateIn).getTime())
+            result.push(obj)
+        }
+        res.json(result)
     } catch (e) {
 
         res.status(500).json({message: 'ошибка запроса списка отчетов'});
