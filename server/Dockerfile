@@ -1,15 +1,10 @@
-FROM node:18-alpine
+FROM node:16-alpine
 
 WORKDIR /app
-
-ARG DEP=""
 
 RUN apk update && apk --no-cache upgrade
 RUN apk add curl
 RUN apk add python3
-
-#    apk add --no-cache python3 ${DEP} && \
-#    rm -rf /var/cache/apk/*
 
 
 COPY ./fonts /app/fonts
