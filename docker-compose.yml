@@ -17,6 +17,8 @@ services:
       - JWTSECRET=yzwDw_fi+Y@wc7,^=eb1?.rkVUU>.n
     depends_on:
       - mongodb
+    volumes:
+      - ./uploads:/app/uploads
     networks:
       - node-network
 

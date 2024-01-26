@@ -176,7 +176,7 @@ export const ReportsPage = () => {
         if(rowData.hasOwnProperty('dateOut')){
             return ( <div>
                     <span className="p-column-title">Статус</span>
-                    <span className={`report-badge status-completed`}>{rowData.status}</span>
+                    <span className={`report-badge status-completed`}>Завершен</span>
                     </div>
                     )
 
@@ -184,7 +184,7 @@ export const ReportsPage = () => {
         }else{
             return ( <div>
                 <span className="p-column-title">Статус</span>
-                <span className='report-badge status-process' >{rowData.status}</span>
+                <span className='report-badge status-process'>В процессе</span>
             </div>)
 
 

@@ -5,7 +5,6 @@ WORKDIR /app
 RUN apk update && apk --no-cache upgrade
 RUN apk add curl
 RUN apk add python3
-RUN mkdir /app/uploads
 
 COPY ./fonts /app/fonts
 COPY ./middleware /app/middleware

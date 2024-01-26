@@ -42,11 +42,6 @@ router.post('/list', auth, async (req, res) => {
             if (Object.keys(obj).includes('dateOut')) {
                 obj.timeOut = generateTime(new Date(obj.dateOut).getTime())
                 obj.dateOut = generateDate(new Date(obj.dateOut).getTime())
-                obj.status = 'Завершен'
-            } else {
-                obj.timeOut = ''
-                obj.dateOut = ''
-                obj.status = 'В процессе'
             }
             obj.timeIn = generateTime(new Date(obj.dateIn).getTime())
             obj.dateIn = generateDate(new Date(obj.dateIn).getTime())
