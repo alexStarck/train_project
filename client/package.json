@@ -46,5 +46,8 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "dart-sass": "^1.25.0",
+    "node-sass": "npm:dart-sass@^1.25.0"
+  }
 }
