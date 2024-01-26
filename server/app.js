@@ -83,16 +83,14 @@ app.post('/fileRemove', auth, async (req, res) => {
 
 app.post('/upload', auth, upload, async (req, res) => {
     try {
-        console.log(Object.keys(res))
-        console.log(Object.keys(req))
-        let filedata = req.file;
+        const filedata = req.file;
 
         console.log(filedata);
         if (!filedata) {
             res.json({message: "Ошибка при загрузке файла"});
         } else {
                 res.json({
-                    path: req.file.destination + '/' + req.file.filename
+                    path: filedata.path
                 })
         }
 
