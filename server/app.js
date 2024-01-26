@@ -5,40 +5,38 @@ const mongoose = require('mongoose');
 const auth = require('./middleware/auth.middleware');
 const multer = require('multer')
 const {v4: uuidv4} = require('uuid');
-const bcrypt = require("bcryptjs");
-const SuperAdmin = require("./models/SuperAdmin");
 
 const app = express();
 
 
 app.use(express.json({extended: true}));
 
-function logResponseBody(req, res, next) {
-    var oldWrite = res.write,
-        oldEnd = res.end;
-
-    var chunks = [];
-
-    res.write = function (chunk) {
-        chunks.push(chunk);
-
-        return oldWrite.apply(res, arguments);
-    };
-
-    res.end = function (chunk) {
-        if (chunk)
-            chunks.push(chunk);
-
-        var body = Buffer.concat(chunks).toString('utf8');
-        console.log(req.path, body);
-
-        oldEnd.apply(res, arguments);
-    };
-
-    next();
-}
-
-app.use(logResponseBody);
+// function logResponseBody(req, res, next) {
+//     var oldWrite = res.write,
+//         oldEnd = res.end;
+//
+//     var chunks = [];
+//
+//     res.write = function (chunk) {
+//         chunks.push(chunk);
+//
+//         return oldWrite.apply(res, arguments);
+//     };
+//
+//     res.end = function (chunk) {
+//         if (chunk)
+//             chunks.push(chunk);
+//
+//         var body = Buffer.concat(chunks).toString('utf8');
+//         console.log(req.path, body);
+//
+//         oldEnd.apply(res, arguments);
+//     };
+//
+//     next();
+// }
+//
+// app.use(logResponseBody);
 
 
 app.use('/api/auth', require('./routes/auth.routes'));

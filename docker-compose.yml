@@ -6,7 +6,7 @@ services:
     image: node-app
     read_only: true
     container_name: api
-    restart: always
+    restart: unless-stopped
     dns:
       - 1.1.1.1
     ports:
