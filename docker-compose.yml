@@ -12,7 +12,7 @@ services:
     ports:
       - '5000:5000'
     environment:
-      - MONGOURI=mongodb://admin:x+Ku1?n.ypg8BCGjWb>f@mongodb:27017/RJD?authSource=admin
+      - MONGOURI=mongodb://admin:x%2BKu1%3Fn.ypg8BCGjWb%3Ef@mongodb:27017/RJD?authSource=admin
       - DefaultPass=x+Ku1?n.ypg8BCGjWb>f
       - JWTSECRET=yzwDw_fi+Y@wc7,^=eb1?.rkVUU>.n
     depends_on:
