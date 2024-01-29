@@ -56,10 +56,10 @@ services:
   mongodb:
     container_name: mongodb
     image: mongo:latest
-    command: [--auth]
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=x+Ku1?n.ypg8BCGjWb>f
+#    command: [--auth]
+#    environment:
+#      - MONGO_INITDB_ROOT_USERNAME=admin
+#      - MONGO_INITDB_ROOT_PASSWORD=x+Ku1?n.ypg8BCGjWb>f
     volumes:
       - /opt/data:/data/db
     ports:
